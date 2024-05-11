@@ -1,5 +1,5 @@
 # projekt
-Jest to projekt zaliczeniowy, który należy wykonać w ramach kursu "Wstęp do programowania".
+Jest to projekt zaliczeniowy, który należy wykonać w ramach kursu "Programowanie"
 # Aktualny skład  zespołu projektowego to:
   1. Natalia Koczkodaj 282231
   2. Natalia Jędrek 282250
