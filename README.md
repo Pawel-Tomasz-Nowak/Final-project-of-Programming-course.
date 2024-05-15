@@ -1,4 +1,3 @@
-# projekt
 Jest to projekt zaliczeniowy, który należy wykonać w ramach kursu "Programowanie"
 # Aktualny skład  zespołu projektowego to:
   1. Natalia Koczkodaj 282231
