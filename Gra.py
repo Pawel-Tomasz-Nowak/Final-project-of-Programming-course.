@@ -5,8 +5,8 @@ import sys
 pygame.init()
 
 # Zadeklaruj szerokość i wysokość okna.
-width = 1900
-height = 1080
+width:int = 400
+height:int = 700
 
 window_size = (width, height)
 
