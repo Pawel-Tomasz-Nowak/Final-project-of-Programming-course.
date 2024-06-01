@@ -13,6 +13,39 @@ class Point():
 
 
 
+class CannonBall():
+
+
+    def __init__(self, x:float, y:float, r:float, speed:float, alpha:float):
+        #Współrzędne środka kuli.
+        self.x = x
+        self.y = y
+
+        #Promień kuli
+        self.r = r
+
+        #Wyznacz wspólrzędne wektora prędkości.
+        self.dx = np.cos(alpha)*speed
+        self.dy = np.sin(alpha)*speed
+
+        #Licz ile razy piłka się odbiła
+        self.n_odbic = 0
+        
+
+
+
+    def NarysujKule(self, screen: pg.Surface, color: list[int] = (100, 100, 100)):
+        pg.draw.circle(surface = screen, color = color, 
+                       center = (self.x, self.y), radius = self.r)
+        
+
+
+    def AktualizujWspółrzędne(self):
+        self.x = self.x + self.dx
+        self.y = self.y - self.dy
+        
+
+
 class Cannon():
 
 
@@ -72,13 +105,17 @@ class Cannon():
                 return np.arctan(tangens) + (np.pi if tangens <0 else 0)
 
 
-                
             else:
                 return np.pi/2
             
         else:
-            return False
-        
+            if x2 > x1:
+                return 0
+            elif x2 < x1:
+                return np.pi
+            else:
+                return np.pi/2
+            
             
     def NarysujArmatę(self, surface: pg.Surface, color:tuple[int] =[0,0,0]) ->None:
         self.ZnajdźWierzchołki(self.slope)
@@ -91,6 +128,22 @@ class Cannon():
 
         pg.draw.circle(surface = surface, 
             color = color, center = (self.x0, self.y0), radius = self.width/2)
+        
+
+    
+    def WystrzelKulę(self, screen:pg.Surface, speed) -> CannonBall:
+        #Promień kuli.
+        r = 15
+        #Policz współrzędne środka kuli.
+        ball_x = self.x0 + np.cos(self.slope)*(self.height+2*r)
+        ball_y = self.y0 - np.sin(self.slope)*(self.height+2*r)
+
+        Kula = CannonBall(ball_x, ball_y, r, speed = speed, alpha = self.slope)
+        Kula.NarysujKule(screen)
+
+        return Kula
+
+
             
 
 

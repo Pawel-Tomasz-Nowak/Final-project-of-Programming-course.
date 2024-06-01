@@ -80,32 +80,63 @@ screen.fill(color = ORANGE, )
 
 
 #Narysuj pierwszą armatę wypionizowaną.
-Prostokat1 =Klasy.Cannon(window_size[0]/2, window_size[1]-125, 50, 100,)
-Prostokat1.NarysujArmatę(surface = screen, color = [0, 0,0])
+Działo =Klasy.Cannon(window_size[0]/2, window_size[1]-125, 50, 100,)
+Działo.NarysujArmatę(surface = screen, color = [0, 0,0])
 
+
+#Zmienna mówiąca, czy kula zostala wystrzelona.
+shot_ball: bool = False
 
 
 
 while running:
+        Działo.NarysujArmatę(surface = screen, color = ORANGE)
+
+        #Tworzenie nowego działa.
+        Działo = Klasy.Cannon(window_size[0]/2, window_size[1]-125, 50, 100)
+
+        kat =  Klasy.Cannon.PoliczKąt(Działo.x0, Działo.y0)
+                    
+        if kat is not False:
+            Działo.slope = kat
+
+        Działo.NarysujArmatę(surface = screen, color = [0,0,0])
+
+                
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
 
-            elif event.type == pg.MOUSEBUTTONDOWN and event.button == 3:
-                #Poniższa linijka "usuwa" stare działo.
-                Prostokat1.NarysujArmatę(surface = screen, color = ORANGE)
+            elif event.type == pg.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if shot_ball is False:
+                        Kula = Działo.WystrzelKulę(screen = screen, speed = 0.5)
 
-                #Tworzenie nowego działa.
-                Prostokat1 = Klasy.Cannon(window_size[0]/2, window_size[1]-125, 50, 100)
 
-                kat =  Klasy.Cannon.PoliczKąt(Prostokat1.x0, Prostokat1.y0)
-                
-                if kat is not False:
-                    Prostokat1.slope = kat
+                        shot_ball = True
+                    
 
-                Prostokat1.NarysujArmatę(surface = screen, color = [0,0,0])
+        if shot_ball is True:
+            #Skasuj poprzednią wersję kulki.
+            Kula.NarysujKule(screen, color = ORANGE)
 
+            Kula.AktualizujWspółrzędne()
+
+            Kula.NarysujKule(screen  = screen)
+
+            #Sprawdzanie, czy kula nie wyszła poza mapę.
+            if Kula.x < Kula.r or Kula.x > window_size[0]-Kula.r:
+                Kula.dx = -Kula.dx
+                #Zwiększ liczbę odbić o jeden.
+                Kula.n_odbic += 1
+
+            
+            if Kula.y <= Kula.r or Kula.n_odbic == 3:
+                #Wymaż kulkę
+                Kula.NarysujKule(screen, color = ORANGE)
+                shot_ball = False
+           
 
 
         pg.display.update()
