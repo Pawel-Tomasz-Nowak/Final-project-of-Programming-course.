@@ -1,6 +1,8 @@
 import pygame as pg
 from typing import Tuple, List
 import sys
+import Klasy
+
 
 # Kolory
 Color = Tuple[int, int, int]
@@ -11,14 +13,17 @@ BLACK: Color = (0, 0, 0)
 
 # Zadeklaruj szerokość i wysokość okna.
 screen_width: int = 400
-screen_height: int = 700
-window_size: Tuple[int, int] = (screen_width, screen_height)
+screen_height: int = 750
+window_size: tuple[int, int] = (screen_width, screen_height)
 
+
+
+## ------------------------  SEKCJA DOTYCZĄCA EKRANU STARTOWEGO ------------------------
 # Inicjalizacja Pygame
 pg.init()
 
 # Stworzenie okna. Ten obiekt jest ważny, ponieważ jest on klasy Surface, czyli powierzchni, na którą można dodawać figury.
-screen: pg.Surface = pg.display.set_mode(window_size)
+intro_screen: pg.Surface = pg.display.set_mode(window_size)
 font: pg.font.Font = pg.font.SysFont('Arial', 64)
 small_font: pg.font.Font = pg.font.SysFont('Arial', 28)
 mini_font: pg.font.Font = pg.font.SysFont('Arial', 18)
@@ -51,12 +56,14 @@ def pokaz_ekran_startowy():
                 if zdarzenie.button == 1 and graj_rect.collidepoint(zdarzenie.pos):
                     start = False
 
-        screen.fill(ORANGE)
-        screen.blit(tytul_text, (screen_width // 2 - tytul_text.get_width() // 2, 150))
-        screen.blit(graj_text, graj_rect)
-        screen.blit(polecenie_text, polecenie_rect)
+        intro_screen.fill(ORANGE)
+        intro_screen.blit(tytul_text, (screen_width // 2 - tytul_text.get_width() // 2, 150))
+        intro_screen.blit(graj_text, graj_rect)
+
+        intro_screen.blit(polecenie_text, polecenie_rect)
         for instrukcja_text, instrukcja_rect in zip(instrukcja_texts, instrukcja_rects):
-            screen.blit(instrukcja_text, instrukcja_rect)
+            intro_screen.blit(instrukcja_text, instrukcja_rect)
+
         pg.display.update()
 
 pokaz_ekran_startowy()
@@ -64,24 +71,43 @@ pokaz_ekran_startowy()
 
 
 
-# # Pętla gry
-# running = True
-# while running:
-#     for event in pg.event.get():
-#         if event.type == pg.QUIT:
-#             running = False
+# # ------------------------ SEKCJA GŁÓWNA GRY ------------------------
+screen: pg.Surface = pg.display.set_mode(window_size)
+running = True
+
+screen.fill(color = ORANGE, )
 
 
-#     # Tutaj umieść kod rysujący elementy gry
-    
-#     # Aktualizacja ekranu
-#     pg.display.flip()
-    
 
+#Narysuj pierwszą armatę wypionizowaną.
+Prostokat1 =Klasy.Cannon(window_size[0]/2, window_size[1]-125, 50, 100,)
+Prostokat1.NarysujArmatę(surface = screen, color = [0, 0,0])
 
 
 
 
-# Zakończenie Pygame
-pg.quit()
-sys.exit()
+while running:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                sys.exit()
+
+            elif event.type == pg.MOUSEBUTTONDOWN and event.button == 3:
+                #Poniższa linijka "usuwa" stare działo.
+                Prostokat1.NarysujArmatę(surface = screen, color = ORANGE)
+
+                #Tworzenie nowego działa.
+                Prostokat1 = Klasy.Cannon(window_size[0]/2, window_size[1]-125, 50, 100)
+
+                kat =  Klasy.Cannon.PoliczKąt(Prostokat1.x0, Prostokat1.y0)
+                
+                if kat is not False:
+                    Prostokat1.slope = kat
+
+                Prostokat1.NarysujArmatę(surface = screen, color = [0,0,0])
+
+
+
+        pg.display.update()
+
+

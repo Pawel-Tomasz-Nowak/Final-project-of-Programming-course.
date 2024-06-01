@@ -1,13 +1,16 @@
 import pygame as pg
 import numpy as np
+import sys
 
-
-#Klasa reprezentująca punkt, który utoższamiamy z wierzchołkami.
 class Point():
+
+
 
     def __init__(self, x:float, y:float) ->None:
         self.x = x
         self.y = y
+
+
 
 
 class Cannon():
@@ -89,6 +92,10 @@ class Cannon():
         pg.draw.circle(surface = surface, 
             color = color, center = (self.x0, self.y0), radius = self.width/2)
             
+
+
+
+
 
 
 
