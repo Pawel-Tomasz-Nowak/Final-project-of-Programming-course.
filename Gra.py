@@ -1,21 +1,7 @@
 import pygame as pg
-from typing import Tuple, List
 import sys
 import Klasy
-
-
-# Kolory
-Color = Tuple[int, int, int]
-WHITE: Color = (255, 255, 255)
-MEDIUM_GRAY: Color = (100, 100, 100)
-ORANGE: Color = (255, 131, 32)
-BLACK: Color = (0, 0, 0)
-
-# Zadeklaruj szerokość i wysokość okna.
-screen_width: int = 400
-screen_height: int = 750
-window_size: tuple[int, int] = (screen_width, screen_height)
-
+from Stałe import screen_width, screen_height, window_size, ORANGE, WHITE, MEDIUM_GRAY, BLACK
 
 ## ------------------------  SEKCJA DOTYCZĄCA EKRANU STARTOWEGO ------------------------
 # Inicjalizacja Pygame
@@ -38,15 +24,15 @@ def pokaz_ekran_startowy():
     graj_rect: pg.Rect = graj_text.get_rect(center=(screen_width // 2, screen_height // 2))
     polecenie_text: pg.Surface = small_font.render("Kliknij GRAJ aby rozpocząć grę", True, MEDIUM_GRAY)
     polecenie_rect: pg.Rect = polecenie_text.get_rect(center=(screen_width // 2, screen_height // 2 + 100))
-    instrukcja_lines: List[str] = [
+    instrukcja_lines: list[str] = [
         "Ustaw armatę pod odpowiednim kątem.",
         "Wystrzel piłkę klikając lewy przycisk myszy.",
         "Pamiętaj, że piłka może odbić się tylko dwa razy!",
         "Powodzenia!"
     ]
 
-    instrukcja_texts: List[pg.Surface] = [mini_font.render(line, True, BLACK) for line in instrukcja_lines]
-    instrukcja_rects: List[pg.Rect] = [instrukcja_text.get_rect(center=(screen_width // 2, screen_height // 2 + 200 + i * 30)) for i, instrukcja_text in enumerate(instrukcja_texts)]
+    instrukcja_texts: list[pg.Surface] = [mini_font.render(line, True, BLACK) for line in instrukcja_lines]
+    instrukcja_rects: list[pg.Rect] = [instrukcja_text.get_rect(center=(screen_width // 2, screen_height // 2 + 200 + i * 30)) for i, instrukcja_text in enumerate(instrukcja_texts)]
 
     while start:
         for zdarzenie in pg.event.get():
@@ -78,19 +64,33 @@ running = True
 
 screen.fill(color = ORANGE, )
 
-#stworzenie tablicy
+#Parametry tablicy.
 tablica_kolor = (255,255,255)
 tablica_wysokość = 100
 tablica_szerokość = 150
+
+
+#Parametry kosza.
 kosz_kolor = (255,0,0)
 kosz_wysokość = 60
 kosz_szerokość = 80
 
 
-tablica = pg.Rect(screen_width//2 - tablica_szerokość//2, screen_height*1//5-tablica_wysokość//2, tablica_szerokość, tablica_wysokość)
-kosz = pg.Rect(screen_width//2 - kosz_szerokość//2, screen_height*1//5+tablica_wysokość//2-kosz_wysokość, kosz_szerokość, kosz_wysokość)
-pg.draw.rect(screen, tablica_kolor, tablica)
-pg.draw.rect(screen, kosz_kolor, kosz)
+tablica = Klasy.Prostokąt(anchor = (screen_width//2 - tablica_szerokość//2,screen_height*1//5-tablica_wysokość//2)
+                          ,color = tablica_kolor, width = tablica_szerokość, height = tablica_wysokość
+                          )
+tablica.NarysujProstokąt(screen = screen)
+
+
+
+kosz = Klasy.Prostokąt((screen_width//2 - kosz_szerokość//2,
+                screen_height*1//5+tablica_wysokość//2-kosz_wysokość), color = kosz_kolor, width = kosz_szerokość, 
+                 height =  kosz_wysokość)
+
+kosz.NarysujProstokąt(screen = screen)
+
+
+
 
 #Narysuj pierwszą armatę wypionizowaną.
 Działo =Klasy.Cannon(window_size[0]/2, window_size[1]-125, 50, 100,)
@@ -134,12 +134,6 @@ while running:
             #Skasuj poprzednią wersję kulki.
             Kula.NarysujKule(screen, color = ORANGE)
             
-            #Popraw tablicę, gdy poprzedni klon piłki jest kasowany.
-            tablica = pg.Rect(screen_width//2 - tablica_szerokość//2, screen_height*1//5-tablica_wysokość//2, tablica_szerokość, tablica_wysokość)
-            kosz = pg.Rect(screen_width//2 - kosz_szerokość//2, screen_height*1//5+tablica_wysokość//2-kosz_wysokość, kosz_szerokość, kosz_wysokość)
-            pg.draw.rect(screen, tablica_kolor, tablica)
-            pg.draw.rect(screen, kosz_kolor, kosz)
-
 
             Kula.AktualizujWspółrzędne()
 

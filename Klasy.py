@@ -1,11 +1,31 @@
 import pygame as pg
 import numpy as np
-import sys
+from Stałe import screen_width, screen_height
+
+
+
+
+class Prostokąt():
+    def __init__(self, anchor:tuple[float], color:list[int], width:float, height:float):
+        self.anchor = anchor
+        self.color = color
+
+        self.width = width
+        self.height = height
+
+
+
+
+    def NarysujProstokąt(self,screen):    
+        tablica = pg.Rect(self.anchor[0], self.anchor[1], self.width, self.height)
+        
+        pg.draw.rect(surface = screen, 
+                     color = self.color, 
+                     rect = tablica)
+        
+
 
 class Point():
-
-
-
     def __init__(self, x:float, y:float) ->None:
         self.x = x
         self.y = y
