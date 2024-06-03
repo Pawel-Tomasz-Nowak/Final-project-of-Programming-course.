@@ -64,6 +64,13 @@ running = True
 
 screen.fill(color = ORANGE, )
 
+# #Zmienne do statystyki z rozgrywki (odkodowanie = ctrl + "/")
+# shots_attempted = 0
+# shots_made = 0
+# points = 0
+# game_time = 0
+# max_shots = 20
+
 #Parametry tablicy.
 tablica_kolor = (255,255,255)
 tablica_wysokość = 100
@@ -159,4 +166,52 @@ while running:
 
         pg.display.update()
 
+#Aktualny problem to ze nie ma mozliwsci zdefiniowac zmiennych jak skutecznosci, zdobyty punkt itd., 
+#na prostym przykladzie ekran koncowy dzialal ale wystepuje brak pewnosci co do optymalnosci przez funkcje
+#a nie po prostu tak jak ekran startowy, ekran koncowy nie moze sie pokazac bo nie ma ograniczenia w rzutach
+#Ekran koncowy (jak ktos bedzie chcial sprobowac cos sprawdzic zrobic to aby odkomentowac 
+#zaznaczcie kod i nacisniejcie ctrl + "/")
 
+# # Przycisk 'Zagraj ponownie'
+# button_width = 200
+# button_height = 50
+# button_color = ORANGE
+# button_text_color = WHITE
+# button_rect = pg.Rect((window_size[0] - button_width) // 2, window_size[1] - 100, button_width, button_height)
+
+# def draw_text(text, font, color, surface, x, y):
+#     textobj = font.render(text, True, color)
+#     textrect = textobj.get_rect()
+#     textrect.center = (x, y)
+#     surface.blit(textobj, textrect)
+
+# def game_over_screen():
+#     global game_time, points, shots_attempted, shots_made
+#     accuracy = (shots_made / shots_attempted) * 100 if shots_attempted > 0 else 0
+#     game_time_minutes = game_time // 60
+#     game_time_seconds = game_time % 60
+#     running = True
+#     while running:
+#         for event in pygame.event.get():
+#             if event.type == pygame.QUIT:
+#                 pygame.quit()
+#                 sys.exit()
+#             if event.type == pygame.MOUSEBUTTONDOWN:
+#                 if button_rect.collidepoint(event.pos):
+#                     return True
+
+#         screen.fill(LIGHT_BLUE)
+
+#         # Rysowanie tekstu 'Koniec meczu'
+#         draw_text('Koniec meczu', font, BLACK, screen, screen_width // 2, screen_height // 4)
+
+#         # Rysowanie statystyk
+#         draw_text(f'Czas gry: {game_time_minutes}:{game_time_seconds:02d}', small_font, BLACK, screen, screen_width // 2, screen_height // 2 - 40)
+#         draw_text(f'Ilość punktów: {points}', small_font, BLACK, screen, screen_width // 2, screen_height // 2)
+#         draw_text(f'Celność: {accuracy:.2f}%', small_font, BLACK, screen, screen_width // 2, screen_height // 2 + 40)
+
+#         # Rysowanie przycisku 'Zagraj ponownie'
+#         pygame.draw.rect(screen, button_color, button_rect)
+#         draw_text('Zagraj ponownie', small_font, button_text_color, screen, button_rect.centerx, button_rect.centery)
+
+#         pygame.display.flip()
