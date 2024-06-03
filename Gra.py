@@ -150,7 +150,11 @@ while running:
                 #Wymaż kulkę
                 Kula.NarysujKule(screen, color = ORANGE)
                 shot_ball = False
-           
+
+        #Napraw kosz i tablicę.
+        tablica.NarysujProstokąt(screen = screen)
+        kosz.NarysujProstokąt(screen = screen)
+
 
 
         pg.display.update()
