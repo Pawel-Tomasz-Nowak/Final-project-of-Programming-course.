@@ -1,7 +1,7 @@
 import pygame as pg
 import sys
 import Klasy
-from Stałe import screen_width, screen_height, window_size, ORANGE, WHITE, MEDIUM_GRAY, BLACK
+from Stałe import screen_width, screen_height, window_size, ORANGE, WHITE, MEDIUM_GRAY, BLACK, LIGHT_BLUE
 
 ## ------------------------  SEKCJA DOTYCZĄCA EKRANU STARTOWEGO ------------------------
 # Inicjalizacja Pygame
