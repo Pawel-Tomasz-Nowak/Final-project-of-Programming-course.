@@ -17,7 +17,6 @@ screen_height: int = 750
 window_size: tuple[int, int] = (screen_width, screen_height)
 
 
-
 ## ------------------------  SEKCJA DOTYCZĄCA EKRANU STARTOWEGO ------------------------
 # Inicjalizacja Pygame
 pg.init()
@@ -29,6 +28,8 @@ small_font: pg.font.Font = pg.font.SysFont('Arial', 28)
 mini_font: pg.font.Font = pg.font.SysFont('Arial', 18)
 
 pg.display.set_caption("Moja Gra")   # Tytuł okna
+
+
 
 def pokaz_ekran_startowy():
     start: bool = True
@@ -77,7 +78,19 @@ running = True
 
 screen.fill(color = ORANGE, )
 
+#stworzenie tablicy
+tablica_kolor = (255,255,255)
+tablica_wysokość = 100
+tablica_szerokość = 150
+kosz_kolor = (255,0,0)
+kosz_wysokość = 60
+kosz_szerokość = 80
 
+
+tablica = pg.Rect(screen_width//2 - tablica_szerokość//2, screen_height*1//5-tablica_wysokość//2, tablica_szerokość, tablica_wysokość)
+kosz = pg.Rect(screen_width//2 - kosz_szerokość//2, screen_height*1//5+tablica_wysokość//2-kosz_wysokość, kosz_szerokość, kosz_wysokość)
+pg.draw.rect(screen, tablica_kolor, tablica)
+pg.draw.rect(screen, kosz_kolor, kosz)
 
 #Narysuj pierwszą armatę wypionizowaną.
 Działo =Klasy.Cannon(window_size[0]/2, window_size[1]-125, 50, 100,)
