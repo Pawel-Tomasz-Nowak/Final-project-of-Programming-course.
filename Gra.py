@@ -133,6 +133,13 @@ while running:
         if shot_ball is True:
             #Skasuj poprzednią wersję kulki.
             Kula.NarysujKule(screen, color = ORANGE)
+            
+            #Popraw tablicę, gdy poprzedni klon piłki jest kasowany.
+            tablica = pg.Rect(screen_width//2 - tablica_szerokość//2, screen_height*1//5-tablica_wysokość//2, tablica_szerokość, tablica_wysokość)
+            kosz = pg.Rect(screen_width//2 - kosz_szerokość//2, screen_height*1//5+tablica_wysokość//2-kosz_wysokość, kosz_szerokość, kosz_wysokość)
+            pg.draw.rect(screen, tablica_kolor, tablica)
+            pg.draw.rect(screen, kosz_kolor, kosz)
+
 
             Kula.AktualizujWspółrzędne()
 
