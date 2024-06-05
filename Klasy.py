@@ -1,6 +1,6 @@
 import pygame as pg
 import numpy as np
-from Stałe import screen_width, screen_height
+#from Stałe import screen_width, screen_height
 
 
 
@@ -12,7 +12,6 @@ class Prostokąt():
 
         self.width = width
         self.height = height
-
 
 
 

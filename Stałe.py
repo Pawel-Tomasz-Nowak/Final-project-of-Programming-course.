@@ -1,4 +1,7 @@
 from typing import Tuple
+import pygame as pg
+
+pg.init()
 
 # Kolory
 Color = Tuple[int, int, int]
@@ -13,3 +16,17 @@ LIGHT_BLUE: Color = (173, 216, 230)
 screen_width: int = 400
 screen_height: int = 750
 window_size: tuple[int, int] = (screen_width, screen_height)
+
+
+# Rozmiary czcionek.
+font: pg.font.Font = pg.font.SysFont('Arial', 64)
+small_font: pg.font.Font = pg.font.SysFont('Arial', 28)
+mini_font: pg.font.Font = pg.font.SysFont('Arial', 18)
+
+
+# Parametry przycisku 'Zagraj ponownie'
+end_button_width = 200
+end_button_height = 50
+end_button_color = ORANGE
+end_button_text_color = WHITE
+
