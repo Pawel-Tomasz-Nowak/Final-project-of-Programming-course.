@@ -175,7 +175,7 @@ screen, tablica, kosz  = NarysujEkranRozgrywki()
 
 #Narysuj pierwszą armatę wypionizowaną.
 Działo:Klasy.Cannon =Klasy.Cannon(window_size[0]/2, window_size[1]-125, 50, 100,)
-Działo.NarysujArmatę(surface = screen, color = [0, 0,0])
+Działo.NarysujArmatę(screen = screen, color = [0, 0,0])
 
 
 # #Zmienne do statystyki z rozgrywki.
@@ -203,7 +203,7 @@ running:bool = True
 
 
 while running:
-        Działo.NarysujArmatę(surface = screen, color = ORANGE)
+        Działo.NarysujArmatę(screen = screen, color = ORANGE)
 
 
      
@@ -218,7 +218,7 @@ while running:
         if kąt is not False:
             Działo.slope = kąt
 
-        Działo.NarysujArmatę(surface = screen, color = [0,0,0])
+        Działo.NarysujArmatę(screen = screen, color = [0,0,0])
 
                 
         for event in pg.event.get():
