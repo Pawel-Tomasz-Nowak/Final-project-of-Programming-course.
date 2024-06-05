@@ -11,17 +11,16 @@ pg.init()
 ## ------------------------  SEKCJA DOTYCZĄCA EKRANU STARTOWEGO ------------------------
 
 
-def pokaz_ekran_startowy():
-
-
+def pokaz_ekran_startowy() -> None:
+    """"Zadaniem tej funkcji jest stworzenie okna początkowego, które zawiera"""
     # Stworzenie okna. Ten obiekt jest ważny, ponieważ jest on klasy Surface, czyli powierzchni, na którą można dodawać figury.
     intro_screen: pg.Surface = pg.display.set_mode(window_size)
-    pg.display.set_caption("Moja Gra")   # Tytuł okna
+    pg.display.set_caption("Koszmata 3.0")   # Tytuł okna
 
 
     """"""
-    start: bool = True
-    tytul_text: pg.Surface = font.render("Nazwa gry", True, WHITE)
+    running: bool = True
+    tytul_text: pg.Surface = font.render("Koszmata 3.0", True, WHITE)
     graj_text: pg.Surface = font.render("GRAJ", True, WHITE)
     graj_rect: pg.Rect = graj_text.get_rect(center=(screen_width // 2, screen_height // 2))
     polecenie_text: pg.Surface = small_font.render("Kliknij GRAJ aby rozpocząć grę", True, MEDIUM_GRAY)
@@ -36,14 +35,14 @@ def pokaz_ekran_startowy():
     instrukcja_texts: list[pg.Surface] = [mini_font.render(line, True, BLACK) for line in instrukcja_lines]
     instrukcja_rects: list[pg.Rect] = [instrukcja_text.get_rect(center=(screen_width // 2, screen_height // 2 + 200 + i * 30)) for i, instrukcja_text in enumerate(instrukcja_texts)]
 
-    while start:
+    while running:
         for zdarzenie in pg.event.get():
             if zdarzenie.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
             elif zdarzenie.type == pg.MOUSEBUTTONDOWN:
                 if zdarzenie.button == 1 and graj_rect.collidepoint(zdarzenie.pos):
-                    start = False
+                    running = False
 
         intro_screen.fill(ORANGE)
         intro_screen.blit(tytul_text, (screen_width // 2 - tytul_text.get_width() // 2, 150))
@@ -56,10 +55,6 @@ def pokaz_ekran_startowy():
         pg.display.update()
 
 pokaz_ekran_startowy()
-
-
-#ekran koncowy
-
 
 
 def draw_text(text:str, 
@@ -78,18 +73,25 @@ def draw_text(text:str,
     surface.blit(textobj, textrect)
 
 
-
-def game_over_screen():
+#Ekran wyświetlany pod koniec gry.
+def game_over_screen() -> bool:
+    """"Funkcja ta zajmuje się wyświetlaniem ekranu końcowego, na którym wyświetlane są podstawowe
+    statystyki, takie jak: dokładność nasza, liczba zdobytych przez nas punktów oraz czas gry. 
+    Zwraca wartość bool równa True, jeżeli użytkownik chce zagrać ponownie , lub wartość False, gdy użytkownik ma dość gry."""
     global game_time, shots_attempted, shots_made
+    
 
+    #pg.time.get_ticks() zwraca wynik w milisekundach, więc zamień tę wartość na sekundy, dzieląc przez 1000.
+    game_time = (pg.time.get_ticks() - czas_startu_gry)/1000
     end_button_rect = pg.Rect((window_size[0] - end_button_width) // 2, window_size[1] - 100, end_button_width, end_button_height)
 
-
+    #Policz dokładnośc naszych strzałów, zaokrąglij ją.
     accuracy:float =  round((shots_made / shots_attempted) * 100,2)
-    game_time_minutes:int = game_time // 60
-    game_time_seconds:int = game_time % 60
+    game_time_minutes:int = int(game_time // 60)
+    game_time_seconds:int = int(game_time % 60)
 
-
+    
+    #Motornicza zmienna, utrzymująca program przy życiu.
     running = True
     while running:
         for event in pg.event.get():
@@ -97,6 +99,8 @@ def game_over_screen():
                 pg.quit()
                 sys.exit()
             if event.type == pg.MOUSEBUTTONDOWN:
+
+                #Jeżeli  kursor myszy znajduje się w przycisku resetującym grę, zresetuj grę.
                 if end_button_rect.collidepoint(event.pos):
                     pokaz_ekran_startowy()
 
@@ -130,6 +134,8 @@ def game_over_screen():
 # # ------------------------ SEKCJA GŁÓWNA GRY ------------------------
 
 def NarysujEkranRozgrywki() -> tuple[pg.Surface, Klasy.Prostokąt, Klasy.Prostokąt]:
+    """"Funkcja ta rysuje ekran, na którym ma miejsce główna rozgrywka.
+    """
     #Stwórz ekran, na którym będzie pojawiać się piłka oraz armata  i inne atrakcje.
     screen: pg.Surface = pg.display.set_mode(window_size)
 
@@ -175,28 +181,44 @@ Działo.NarysujArmatę(surface = screen, color = [0, 0,0])
 
 
 # #Zmienne do statystyki z rozgrywki.
+#Łączna liczba oddanych strzałów.
 shots_attempted:int = 0
+#Udane strzały.
 shots_made:int = 0
+
+#Czas gry
 game_time:float = 0
+#Maksymalna liczba dozwolonych strzałów
 max_shots:int = 5
 
 
 #Zmienna mówiąca, czy kula zostala wystrzelona.
 shot_ball: bool = False
 
+
+#Moment rozpoczęcia gry. Będzie ta zmienna ważna przy podsumowaniu statystyk.
+czas_startu_gry = pg.time.get_ticks()
+
 #Zmienna, która odpowiada za trwanie rozgrywki.
 running:bool = True
+
+
 
 while running:
         Działo.NarysujArmatę(surface = screen, color = ORANGE)
 
+
+     
         #Tworzenie nowego działa.
         Działo = Klasy.Cannon(window_size[0]/2, window_size[1]-125, 50, 100)
 
-        kat =  Klasy.Cannon.PoliczKąt(Działo.x0, Działo.y0)
-                    
-        if kat is not False:
-            Działo.slope = kat
+        #Policz kąt nachylenia armaty.
+        kąt =  Klasy.Cannon.PoliczKąt(Działo.x0, Działo.y0)
+        
+        #Jeżęli kąt nie jest równy False (czyli kąt nie jest równy 0 i nie jest równy pi), to zmień wartość kąta
+        #Jeżęli kąt jest równy False, to kąt domyślnie jest równy pi/2, czyli armata jest wypionizowana.
+        if kąt is not False:
+            Działo.slope = kąt
 
         Działo.NarysujArmatę(surface = screen, color = [0,0,0])
 
@@ -207,9 +229,9 @@ while running:
                 pg.quit()
                 sys.exit()
 
-
             #Sprawdzamy, czy użytkownik nacisnął przycisk myszy.
             elif event.type == pg.MOUSEBUTTONDOWN:
+
                 #A dokładniej - czy nacisnął lewy przycisk myszy
                 if event.button == 1:
                     #Jeżeli w momencie strzału nie ma w obiegu kuli, wystrzel kulę.
@@ -218,20 +240,16 @@ while running:
 
                         #Ta zmienna shot_ball ustawi się ponownie na False, gdy kula (dotknię Tablicy lub obręczy) 
                         #lub gdy górny punkt piłki bedzie zbyt wysoko.
-                        #gdy wyjdzie 
                         shot_ball = True
 
                         shots_attempted += 1
 
-            
-        
             
 
         if shot_ball is True:
             #Skasuj poprzednią wersję kulki.
             Kula.NarysujKule(screen, color = ORANGE)
             
-
             Kula.AktualizujWspółrzędne()
 
             Kula.NarysujKule(screen  = screen)
@@ -242,20 +260,28 @@ while running:
                 #Zwiększ liczbę odbić o jeden.
                 Kula.n_odbic += 1
 
-            
+            #Jeżeli liczba wykonanych odbić przekroczy dwa, wymaż kulkę.
             if Kula.y <= Kula.r or Kula.n_odbic == 3:
                 #Wymaż kulkę
                 Kula.NarysujKule(screen, color = ORANGE)
                 shot_ball = False
 
-            #Teraz zbadaj, czy kula dotknęła czerwonej obręczy.
-            if (kosz.anchor[0]<=Kula.x <= kosz.anchor[0] + kosz.width) and       kosz.anchor[1]<=Kula.y + Kula.r<=kosz.anchor[1] +Kula.r:
+            Obszar_Obręcz = pg.Rect((kosz.anchor[0], kosz.anchor[1]+kosz.height), (kosz.width, 1))
+            Obszar_Tablica = pg.Rect(( tablica.anchor[0], tablica.anchor[1]), (tablica.width, tablica.height))
+
+            if Obszar_Obręcz.collidepoint(Kula.x, Kula.y):
                 shots_made += 1
 
-                print(shots_made)
-                
+                Kula.NarysujKule(screen, color = ORANGE)
+
                 shot_ball = False
 
+            elif Obszar_Tablica.collidepoint(Kula.x, Kula.y):
+                Kula.NarysujKule(screen = screen, color = ORANGE)
+
+                shot_ball = False
+
+            
         #Napraw kosz i tablicę.
         tablica.NarysujProstokąt(screen = screen)
         kosz.NarysujProstokąt(screen = screen)
@@ -266,15 +292,15 @@ while running:
         # Wyświetl ekran końcowy
             czy_kontynuować = game_over_screen()
 
+            #Jeżeli gracz chce kontynuować grę, zresetuj grę.
             if czy_kontynuować == True:
                 screen, tablica, kosz = NarysujEkranRozgrywki()
+
+                czas_startu_gry = pg.time.get_ticks()
+
                 shot_ball = False
             else:
                 break
 
             
-
-
         pg.display.update()
-
-#Aktualny problem to ze nie ma mozliwsci zdefiniowac zmiennych jak skutecznosci, zdobyty punkt itd., 
