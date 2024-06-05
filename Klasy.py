@@ -26,15 +26,13 @@ class Prostokąt():
 
 class Point():
     def __init__(self, x:float, y:float) ->None:
-        self.x = x
-        self.y = y
+        self.x:float = x
+        self.y:float = y
 
 
 
 
 class CannonBall():
-
-
     def __init__(self, x:float, y:float, r:float, speed:float, alpha:float):
         #Współrzędne środka kuli.
         self.x = x
@@ -136,23 +134,26 @@ class Cannon():
                 return np.pi/2
             
             
-    def NarysujArmatę(self, surface: pg.Surface, color:tuple[int] =[0,0,0]) ->None:
+    def NarysujArmatę(self, screen: pg.Surface, color:tuple[int] =(0,0,0)) ->None:
         self.ZnajdźWierzchołki(self.slope)
 
             
-        pg.draw.polygon(surface = surface, 
+        pg.draw.polygon(surface = screen, 
                             color  = color, 
                             points = self.wierzch_cords)
             
 
-        pg.draw.circle(surface = surface, 
+        pg.draw.circle(surface = screen, 
             color = color, center = (self.x0, self.y0), radius = self.width/2)
         
 
     
-    def WystrzelKulę(self, screen:pg.Surface, speed) -> CannonBall:
+    def WystrzelKulę(self, screen:pg.Surface, speed:float) -> CannonBall:
+        assert speed >0, "Szybkość musi być dodatnią liczbą"
+        
         #Promień kuli.
         r = 15
+
         #Policz współrzędne środka kuli.
         ball_x = self.x0 + np.cos(self.slope)*(self.height+2*r)
         ball_y = self.y0 - np.sin(self.slope)*(self.height+2*r)

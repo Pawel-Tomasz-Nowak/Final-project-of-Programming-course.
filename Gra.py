@@ -106,9 +106,7 @@ def game_over_screen() -> bool:
 
                     shots_attempted = 0
                     shots_made = 0
-
-
-
+                    
                     return  True
          
             
