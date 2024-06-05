@@ -30,3 +30,13 @@ end_button_height = 50
 end_button_color = ORANGE
 end_button_text_color = WHITE
 
+#Parametry tablicy.
+tablica_kolor = (255,255,255)
+tablica_wysokość = 100
+tablica_szerokość = 150
+
+
+#Parametry kosza.
+kosz_kolor = (255,0,0) #Kolor kosza w kodowaniu RGB
+kosz_wysokość = 60 #Wysokość kosza
+kosz_szerokość = 80 #Szerokość kosza

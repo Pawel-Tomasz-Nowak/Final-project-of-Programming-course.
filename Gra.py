@@ -5,6 +5,9 @@ from Stałe import screen_width, screen_height, window_size
 from Stałe import ORANGE, WHITE, MEDIUM_GRAY, BLACK, LIGHT_BLUE
 from Stałe import font, small_font, mini_font
 from Stałe import end_button_width, end_button_height, end_button_color, end_button_text_color
+from Stałe import tablica_kolor, tablica_szerokość, tablica_wysokość
+from Stałe import kosz_kolor, kosz_szerokość, kosz_wysokość
+
 
 #Inicjalizacja Pygame
 pg.init()
@@ -44,11 +47,11 @@ def pokaz_ekran_startowy() -> None:
                 if zdarzenie.button == 1 and graj_rect.collidepoint(zdarzenie.pos):
                     running = False
 
-        intro_screen.fill(ORANGE)
-        intro_screen.blit(tytul_text, (screen_width // 2 - tytul_text.get_width() // 2, 150))
-        intro_screen.blit(graj_text, graj_rect)
+        intro_screen.fill(ORANGE) #Wypełnij okno startowe na pomarańczowo
+        intro_screen.blit(tytul_text, (screen_width // 2 - tytul_text.get_width() // 2, 150)) #Dodaj tytuł gry na powierzchnie.
+        intro_screen.blit(graj_text, graj_rect) #Dodaj przycisk graj na powierzchnie
 
-        intro_screen.blit(polecenie_text, polecenie_rect)
+        intro_screen.blit(polecenie_text, polecenie_rect) #Dodaj okno z zachętą do rozpoczęcia gry.
         for instrukcja_text, instrukcja_rect in zip(instrukcja_texts, instrukcja_rects):
             intro_screen.blit(instrukcja_text, instrukcja_rect)
 
@@ -78,7 +81,7 @@ def game_over_screen() -> bool:
     """"Funkcja ta zajmuje się wyświetlaniem ekranu końcowego, na którym wyświetlane są podstawowe
     statystyki, takie jak: dokładność nasza, liczba zdobytych przez nas punktów oraz czas gry. 
     Zwraca wartość bool równa True, jeżeli użytkownik chce zagrać ponownie , lub wartość False, gdy użytkownik ma dość gry."""
-    global game_time, shots_attempted, shots_made
+    global game_time, shots_attempted, shots_scored
     
 
     #pg.time.get_ticks() zwraca wynik w milisekundach, więc zamień tę wartość na sekundy, dzieląc przez 1000.
@@ -86,7 +89,7 @@ def game_over_screen() -> bool:
     end_button_rect = pg.Rect((window_size[0] - end_button_width) // 2, window_size[1] - 100, end_button_width, end_button_height)
 
     #Policz dokładnośc naszych strzałów, zaokrąglij ją.
-    accuracy:float =  round((shots_made / shots_attempted) * 100,2)
+    accuracy:float =  round((shots_scored / shots_attempted) * 100,2)
     game_time_minutes:int = int(game_time // 60)
     game_time_seconds:int = int(game_time % 60)
 
@@ -102,28 +105,28 @@ def game_over_screen() -> bool:
 
                 #Jeżeli  kursor myszy znajduje się w przycisku resetującym grę, zresetuj grę.
                 if end_button_rect.collidepoint(event.pos):
-                    pokaz_ekran_startowy()
+                    pokaz_ekran_startowy() #Wracamy do okienka początkowego.
 
-                    shots_attempted = 0
-                    shots_made = 0
+                    shots_attempted = 0 #Wyzeruj wszystkie statystyki związane z liczbą punktów.
+                    shots_scored = 0
                     
-                    return  True
+                    return  True #Zwrócenie True przyda się w dolnych partiach kodu. Będzie oznaczało, że chcemy grać dalej.
          
             
 
-        screen.fill(LIGHT_BLUE)
+        game_screen.fill(LIGHT_BLUE)
 
         # Rysowanie tekstu 'Koniec meczu'
-        draw_text('Koniec meczu', font, BLACK, screen, screen_width // 2, screen_height // 4)
+        draw_text('Koniec meczu', font, BLACK, game_screen, screen_width // 2, screen_height // 4)
 
         # Rysowanie statystyk
-        draw_text(f'Czas gry: {game_time_minutes}:{game_time_seconds:02d}', small_font, BLACK, screen, screen_width // 2, screen_height // 2 - 40)
-        draw_text(f'Ilość punktów: {shots_made}', small_font, BLACK, screen, screen_width // 2, screen_height // 2)
-        draw_text(f'Celność: {accuracy:.2f}%', small_font, BLACK, screen, screen_width // 2, screen_height // 2 + 40)
+        draw_text(f'Czas gry: {game_time_minutes}:{game_time_seconds:02d}', small_font, BLACK, game_screen, screen_width // 2, screen_height // 2 - 40)
+        draw_text(f'Ilość punktów: {shots_scored}', small_font, BLACK, game_screen, screen_width // 2, screen_height // 2)
+        draw_text(f'Celność: {accuracy:.2f}%', small_font, BLACK, game_screen, screen_width // 2, screen_height // 2 + 40)
 
         # Rysowanie przycisku 'Zagraj ponownie'
-        pg.draw.rect(screen, end_button_color, end_button_rect)
-        draw_text('Zagraj ponownie', small_font, end_button_text_color, screen, end_button_rect.centerx, end_button_rect.centery)
+        pg.draw.rect(game_screen, end_button_color, end_button_rect)
+        draw_text('Zagraj ponownie', small_font, end_button_text_color, game_screen, end_button_rect.centerx, end_button_rect.centery)
 
         pg.display.flip()
 
@@ -140,54 +143,49 @@ def NarysujEkranRozgrywki() -> tuple[pg.Surface, Klasy.Prostokąt, Klasy.Prostok
 
     screen.fill(color = ORANGE, )
 
-    #Parametry tablicy.
-    tablica_kolor = (255,255,255)
-    tablica_wysokość = 100
-    tablica_szerokość = 150
 
 
-    #Parametry kosza.
-    kosz_kolor = (255,0,0)
-    kosz_wysokość = 60
-    kosz_szerokość = 80
 
-    #Stwórz obiekt klasy tablica i narysuj tę tablicę.
+
     tablica = Klasy.Prostokąt(anchor = (screen_width//2 - tablica_szerokość//2,screen_height*1//5-tablica_wysokość//2)
                             ,color = tablica_kolor, width = tablica_szerokość, height = tablica_wysokość
-                            )
+                            ) #Stwórz obiekt klasy Prostokąt, który będzie reprezentował tablicę.
     
-    tablica.NarysujProstokąt(screen = screen)
+    tablica.NarysujProstokąt(screen = screen) #Narysuj tę tablicę.
 
 
-    #Stwórz obiekt klasy kosz i narysuj ten kosz.
-    # UWAGA, Atrybut anchor obiektu kosz jest zależny od atrybutu anchor obiektu tablica. To należy uwzględnić po prototypie.
-    kosz = Klasy.Prostokąt((screen_width//2 - kosz_szerokość//2,
-                    screen_height*1//5+tablica_wysokość//2-kosz_wysokość), color = kosz_kolor, width = kosz_szerokość, 
-                    height =  kosz_wysokość)
+  
+    kosz = Klasy.Prostokąt(anchor = (screen_width//2 - kosz_szerokość//2,screen_height*1//5+tablica_wysokość//2-kosz_wysokość), 
+                           color = kosz_kolor, width = kosz_szerokość, 
+                    height =  kosz_wysokość) #Stwórz obiekt klasy prostokąt, który będzie reprezentował obręcz.
+                                            #Uwaga, Atrybut anchor będzie zależny od atrybutu anchor obiektu tablica. Ma to znaczenie, gdy tablica będzie się ruszała
+    
 
-    kosz.NarysujProstokąt(screen = screen)
+    kosz.NarysujProstokąt(screen = screen) #Rysowanie obręczy (inaczej nazywany koszem)
 
     return screen, tablica, kosz
 
 
 
-screen, tablica, kosz  = NarysujEkranRozgrywki()
+#game_screen jest okienkiem, na którym rysujemy obiekty będącę interaktywnymi elementami rozgrywki.
+#tablica reprezentuje cały obiekt, na którym zawiszony jest kosz.
+#kosz jest z kolei celem, w którego trafienie jest najważniejszym zadaniem gry.
+game_screen, tablica, kosz  = NarysujEkranRozgrywki()
 
-#Narysuj pierwszą armatę wypionizowaną.
-Działo:Klasy.Cannon =Klasy.Cannon(window_size[0]/2, window_size[1]-125, 50, 100,)
-Działo.NarysujArmatę(screen = screen, color = [0, 0,0])
+
+Działo:Klasy.Cannon =Klasy.Cannon(x0 = window_size[0]/2, y0=window_size[1]-125, #Po naciśnieciu przycisku start stwórz armatę
+                                  width = 50,  height = 100,) #która domyślnie jest wypionizowana (tj. jej nachylenie wynosi 90 stopni)
+
+Działo.NarysujArmatę(screen = game_screen, color = [0, 0,0]) #Teraz narysuj tę armatę.
 
 
-# #Zmienne do statystyki z rozgrywki.
-#Łączna liczba oddanych strzałów.
-shots_attempted:int = 0
-#Udane strzały.
-shots_made:int = 0
 
-#Czas gry
-game_time:float = 0
-#Maksymalna liczba dozwolonych strzałów
-max_shots:int = 5
+
+#Poniższe cztery zmienne będą wykorzystywane do statystyk.
+shots_attempted:int = 0  #Liczba oddanych strzałów (celnych lub niecelnych)
+shots_scoed:int = 0 #Celne strzały.
+game_time:float = 0 #Czas trwania gry (od momentu nacisnięcia przycisku "GRAJ")
+max_shots:int = 5 #Maksdymalna liczba dozwolonych strzałów. Po przekroczeniu jej, ekran rozgrywki przechodzi do ekranu końcowego.
 
 
 #Zmienna mówiąca, czy kula zostala wystrzelona.
@@ -203,7 +201,7 @@ running:bool = True
 
 
 while running:
-        Działo.NarysujArmatę(screen = screen, color = ORANGE)
+        Działo.NarysujArmatę(screen = game_screen, color = ORANGE)
 
 
      
@@ -218,7 +216,7 @@ while running:
         if kąt is not False:
             Działo.slope = kąt
 
-        Działo.NarysujArmatę(screen = screen, color = [0,0,0])
+        Działo.NarysujArmatę(screen = game_screen, color = [0,0,0])
 
                 
         for event in pg.event.get():
@@ -234,7 +232,7 @@ while running:
                 if event.button == 1:
                     #Jeżeli w momencie strzału nie ma w obiegu kuli, wystrzel kulę.
                     if shot_ball is False:
-                        Kula = Działo.WystrzelKulę(screen = screen, speed = 0.5)
+                        Kula = Działo.WystrzelKulę(screen = game_screen, speed = 0.5)
 
                         #Ta zmienna shot_ball ustawi się ponownie na False, gdy kula (dotknię Tablicy lub obręczy) 
                         #lub gdy górny punkt piłki bedzie zbyt wysoko.
@@ -243,46 +241,47 @@ while running:
                         shots_attempted += 1
 
             
-
+       
         if shot_ball is True:
-            #Skasuj poprzednią wersję kulki.
-            Kula.NarysujKule(screen, color = ORANGE)
-            
+            #Skasuj poprzednią wersję kuli.
+            Kula.NarysujKule(screen = game_screen, color = ORANGE)
+    
+            #Aktualizacja współrzędnych środka kuli.
             Kula.AktualizujWspółrzędne()
 
-            Kula.NarysujKule(screen  = screen)
+            #Narysuj kule na nowo.
+            Kula.NarysujKule(screen  = game_screen)
 
-            #Sprawdzanie, czy kula nie wyszła poza mapę.
+            #Jeżeli kulka odbija się od pionowych krawędzi ekranu, zmień składową poziomą wektora prędkości na przeciwną.
             if Kula.x < Kula.r or Kula.x > window_size[0]-Kula.r:
                 Kula.dx = -Kula.dx
                 #Zwiększ liczbę odbić o jeden.
                 Kula.n_odbic += 1
 
-            #Jeżeli liczba wykonanych odbić przekroczy dwa, wymaż kulkę.
+            #Jeżeli (środek kulki znajdzie się w odległości mniejszej niż promień kuli od poziomej krawędzi 
+            #lub jeżeli kulka odbije się co najmniej trzy razy), wtedy wymaż kulę.
             if Kula.y <= Kula.r or Kula.n_odbic == 3:
                 #Wymaż kulkę
-                Kula.NarysujKule(screen, color = ORANGE)
+                Kula.NarysujKule(screen = game_screen, color = ORANGE)
                 shot_ball = False
 
+            #Znajdź obszary prostokątne, które reprezentują odpowiędnio obręcz (inaczej kosz)  oraz tablicę.
             Obszar_Obręcz = pg.Rect((kosz.anchor[0], kosz.anchor[1]+kosz.height), (kosz.width, 1))
             Obszar_Tablica = pg.Rect(( tablica.anchor[0], tablica.anchor[1]), (tablica.width, tablica.height))
 
+            #Jeżeli środek kuli znajduje się w obszarze obręczy (tj. obszar aktywacyjny (trigger area)), to naliczamy punkt.
             if Obszar_Obręcz.collidepoint(Kula.x, Kula.y):
-                shots_made += 1
-
-                Kula.NarysujKule(screen, color = ORANGE)
-
+                shots_scored += 1
                 shot_ball = False
 
             elif Obszar_Tablica.collidepoint(Kula.x, Kula.y):
-                Kula.NarysujKule(screen = screen, color = ORANGE)
-
+        
                 shot_ball = False
 
             
         #Napraw kosz i tablicę.
-        tablica.NarysujProstokąt(screen = screen)
-        kosz.NarysujProstokąt(screen = screen)
+        tablica.NarysujProstokąt(screen = game_screen)
+        kosz.NarysujProstokąt(screen = game_screen)
 
 
         
