@@ -167,7 +167,7 @@ def NarysujEkranRozgrywki() -> tuple[pg.Surface, Klasy.Prostokąt, Klasy.Prostok
     return screen, tablica, kosz
 
 def ZnajdźTła() -> tuple[list[pg.Surface], int]:
-    Folder_Z_Tłami = path.Path(r"C:\Users\pawel\Desktop\Projekt\Projekt-z-kursu-Programowanie-\TłaDoGry")
+    Folder_Z_Tłami = path.Path(r"TłaDoGry")
 
     ListaTeł:int = len([plik for plik in Folder_Z_Tłami.iterdir() if plik.is_file()]) 
 
@@ -214,6 +214,7 @@ ZdjęciaTeł, OdstępPunktowy = ZnajdźTła()
 
 
 while running:
+        
         game_screen.blit(source = ZdjęciaTeł[shots_scored//OdstępPunktowy], #Aktualizuj tło.
                          dest = (screen_width//2 - 512,screen_height//2 - 512)) 
    

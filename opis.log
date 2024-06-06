@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.1.5)  6 JUN 2024 16:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.1.15)  6 JUN 2024 17:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -120,17 +120,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 29--30
 texmf-dist/fonts/enc/dvips/pl/plrm.enc}] [2] (./opis.aux) ) 
 Here is how much of TeX's memory you used:
  651 strings out of 476025
- 11098 string characters out of 5794016
+ 11098 string characters out of 5794015
  1857382 words of memory out of 5000000
  21171 multiletter control sequences out of 15000+600000
  514781 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,5n,48p,959b,121s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 39i,5n,48p,965b,155s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2023/tex
 mf-dist/fonts/type1/public/pl/plbx12.pfb><c:/texlive/2023/texmf-dist/fonts/type
 1/public/pl/plr10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/pl/plr12.p
 fb>
-Output written on opis.pdf (2 pages, 27761 bytes).
+Output written on opis.pdf (2 pages, 28552 bytes).
 PDF statistics:
  27 PDF objects out of 1000 (max. 8388607)
  16 compressed objects within 1 object stream
