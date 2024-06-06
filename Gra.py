@@ -185,7 +185,7 @@ Działo.NarysujArmatę(screen = game_screen, color = [0, 0,0]) #Teraz narysuj t�
 shots_attempted:int = 0  #Liczba oddanych strzałów (celnych lub niecelnych)
 shots_scored:int = 0 #Celne strzały.
 game_time:float = 0 #Czas trwania gry (od momentu nacisnięcia przycisku "GRAJ")
-max_shots:int = 5 #Maksdymalna liczba dozwolonych strzałów. Po przekroczeniu jej, ekran rozgrywki przechodzi do ekranu końcowego.
+max_shots:int = 15 #Maksdymalna liczba dozwolonych strzałów. Po przekroczeniu jej, ekran rozgrywki przechodzi do ekranu końcowego.
 
 
 #Zmienna mówiąca, czy kula zostala wystrzelona.
@@ -274,9 +274,16 @@ while running:
                 shots_scored += 1
                 shot_ball = False
 
+                Kula.NarysujKule(screen = game_screen, 
+                                 color = ORANGE) #Skasuj kulkę, gdy dotknie ona obręczy
+                
             elif Obszar_Tablica.collidepoint(Kula.x, Kula.y):
         
-                shot_ball = False
+                shot_ball = False 
+                
+                Kula.NarysujKule(screen = game_screen, 
+                                 color = ORANGE) #Skasuj kulkę, gdy dotknie ona tablicy.
+                
 
             
         #Napraw kosz i tablicę.
