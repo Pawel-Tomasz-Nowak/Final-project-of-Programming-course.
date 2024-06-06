@@ -1,12 +1,13 @@
-import pygame as pg
+import pygame as pg #Główny moduł
 import sys
-import Klasy
+import Klasy #Moduł zawierający wszystkie klase wykorzystywane w grze.
 from Stałe import screen_width, screen_height, window_size
 from Stałe import ORANGE, WHITE, MEDIUM_GRAY, BLACK, LIGHT_BLUE
 from Stałe import font, small_font, mini_font
 from Stałe import end_button_width, end_button_height, end_button_color, end_button_text_color
 from Stałe import tablica_kolor, tablica_szerokość, tablica_wysokość
 from Stałe import kosz_kolor, kosz_szerokość, kosz_wysokość
+import pathlib as path #Przyda nam się do uzyskiwania ścieżki do folderu z tłami.
 
 
 #Inicjalizacja Pygame
@@ -165,6 +166,16 @@ def NarysujEkranRozgrywki() -> tuple[pg.Surface, Klasy.Prostokąt, Klasy.Prostok
 
     return screen, tablica, kosz
 
+def ZnajdźTła() -> tuple[list[pg.Surface], int]:
+    Folder_Z_Tłami = path.Path(r"C:\Users\pawel\Desktop\Projekt\Projekt-z-kursu-Programowanie-\TłaDoGry")
+
+    ListaTeł:int = len([plik for plik in Folder_Z_Tłami.iterdir() if plik.is_file()]) 
+
+    NazwyTeł =[Folder_Z_Tłami/f"TłoGry{i+1}.jpg" for i in range(0,ListaTeł)]
+
+
+    return [pg.image.load(Tło) for Tło in NazwyTeł], max_shots//len(NazwyTeł)
+
 
 
 #game_screen jest okienkiem, na którym rysujemy obiekty będącę interaktywnymi elementami rozgrywki.
@@ -185,8 +196,8 @@ Działo.NarysujArmatę(screen = game_screen, color = [0, 0,0]) #Teraz narysuj t�
 shots_attempted:int = 0  #Liczba oddanych strzałów (celnych lub niecelnych)
 shots_scored:int = 0 #Celne strzały.
 game_time:float = 0 #Czas trwania gry (od momentu nacisnięcia przycisku "GRAJ")
-max_shots:int = 15 #Maksdymalna liczba dozwolonych strzałów. Po przekroczeniu jej, ekran rozgrywki przechodzi do ekranu końcowego.
-
+max_shots:int = 8 #Maksymalna liczba dozwolonych strzałów. Po przekroczeniu jej, ekran rozgrywki przechodzi do ekranu końcowego.
+#Uwaga, liczba zdjęc musi być dzielnikiem liczby max_shots.
 
 #Zmienna mówiąca, czy kula zostala wystrzelona.
 shot_ball: bool = False
@@ -199,12 +210,14 @@ czas_startu_gry = pg.time.get_ticks()
 running:bool = True
 
 
+ZdjęciaTeł, OdstępPunktowy = ZnajdźTła()
+
 
 while running:
-        Działo.NarysujArmatę(screen = game_screen, color = ORANGE)
-
-
-     
+        game_screen.blit(source = ZdjęciaTeł[shots_scored//OdstępPunktowy], #Aktualizuj tło.
+                         dest = (screen_width//2 - 512,screen_height//2 - 512)) 
+   
+    
         #Tworzenie nowego działa.
         Działo = Klasy.Cannon(window_size[0]/2, window_size[1]-125, 50, 100)
 
