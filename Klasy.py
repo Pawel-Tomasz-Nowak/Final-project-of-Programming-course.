@@ -61,7 +61,17 @@ class CannonBall():
         self.x = self.x + self.dx
         self.y = self.y - self.dy
         
+class Obręcz:
+    def __init__(self, x: float, y: float, width: float, height: float, color: tuple[int]):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.color = color
 
+    def NarysujObręcz(self, screen):
+        obręcz = pg.Rect(self.x - self.width // 2, self.y - self.height // 2, self.width, self.height)
+        pg.draw.ellipse(surface = screen, color = self.color, rect = obręcz)
 
 class Cannon():
 
