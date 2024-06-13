@@ -10,6 +10,18 @@ from Stałe import kosz_kolor, kosz_szerokość, kosz_wysokość
 import pathlib as path #Przyda nam się do uzyskiwania ścieżki do folderu z tłami.
 
 
+#Zainicjuj mikser dźwieku
+pg.mixer.init()
+
+#Wczytaj dźwięk eksplozji.
+explosion_sound = pg.mixer.Sound(file = "Dźwięk wystrzału.mp3")
+#Wczytaj jingiel końcowy
+ending_theme = pg.mixer.Sound(file = "Jingiel końcowy.mp3")
+#Wczytaj dźwięk trafienia.
+scoring_theme = pg.mixer.Sound(file = "ScoringSound.mp3")
+
+
+
 #Inicjalizacja Pygame
 pg.init()
 ## ------------------------  SEKCJA DOTYCZĄCA EKRANU STARTOWEGO ------------------------
@@ -106,6 +118,9 @@ def game_over_screen() -> bool:
 
                 #Jeżeli  kursor myszy znajduje się w przycisku resetującym grę, zresetuj grę.
                 if end_button_rect.collidepoint(event.pos):
+
+                    ending_theme.stop()
+
                     pokaz_ekran_startowy() #Wracamy do okienka początkowego.
 
                     shots_attempted = 0 #Wyzeruj wszystkie statystyki związane z liczbą punktów.
@@ -246,6 +261,9 @@ while running:
                 if event.button == 1:
                     #Jeżeli w momencie strzału nie ma w obiegu kuli, wystrzel kulę.
                     if shot_ball is False:
+                        #Odtwórz dźwięk eksplozji.
+                        explosion_sound.play()
+                        
                         Kula = Działo.WystrzelKulę(screen = game_screen, speed = 0.5)
 
                         #Ta zmienna shot_ball ustawi się ponownie na False, gdy kula (dotknię Tablicy lub obręczy) 
@@ -257,8 +275,6 @@ while running:
             
        
         if shot_ball is True:
-            #Skasuj poprzednią wersję kuli.
-            Kula.NarysujKule(screen = game_screen, color = ORANGE)
     
             #Aktualizacja współrzędnych środka kuli.
             Kula.AktualizujWspółrzędne()
@@ -285,6 +301,8 @@ while running:
 
             #Jeżeli środek kuli znajduje się w obszarze obręczy (tj. obszar aktywacyjny (trigger area)), to naliczamy punkt.
             if Obszar_Obręcz.collidepoint(Kula.x, Kula.y):
+                scoring_theme.play()
+
                 shots_scored += 1
                 shot_ball = False
 
@@ -307,8 +325,11 @@ while running:
 
         
         if shots_attempted >= max_shots and shot_ball == False:
-        # Wyświetl ekran końcowy
+            #Odtwórz jingiel końcowy.
+            ending_theme.play()
+            # Wyświetl ekran końcowy
             czy_kontynuować = game_over_screen()
+
 
             #Jeżeli gracz chce kontynuować grę, zresetuj grę.
             if czy_kontynuować == True:
