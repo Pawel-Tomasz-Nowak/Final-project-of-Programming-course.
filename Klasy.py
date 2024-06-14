@@ -6,12 +6,20 @@ import numpy as np
 
 
 class Prostokąt():
-    def __init__(self, anchor:tuple[float], color:list[int], width:float, height:float):
+    def __init__(self, anchor:list[float], color:list[int], width:float, height:float):
         self.anchor = anchor
         self.color = color
 
         self.width = width
         self.height = height
+
+        self.center = (self.anchor[0] + width/2, self.anchor[1]-height/2)
+
+        #Szybkość poruszania się tablicy w poziomie.
+        self.speed = 0
+
+        
+
 
 
 
@@ -21,6 +29,14 @@ class Prostokąt():
         pg.draw.rect(surface = screen, 
                      color = self.color, 
                      rect = tablica)
+        
+    def ZmieńWspółrzędne(self):
+        self.anchor[0] = self.anchor[0] + self.speed
+
+        self.center = (self.anchor[0] + self.width/2, self.anchor[1]-self.height/2)
+
+
+
         
 
 
@@ -61,17 +77,6 @@ class CannonBall():
         self.x = self.x + self.dx
         self.y = self.y - self.dy
         
-class Obręcz:
-    def __init__(self, x: float, y: float, width: float, height: float, color: tuple[int]):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.color = color
-
-    def NarysujObręcz(self, screen):
-        obręcz = pg.Rect(self.x - self.width // 2, self.y - self.height // 2, self.width, self.height)
-        pg.draw.ellipse(surface = screen, color = self.color, rect = obręcz)
 
 class Cannon():
 

@@ -163,7 +163,7 @@ def NarysujEkranRozgrywki() -> tuple[pg.Surface, Klasy.Prostokąt, Klasy.Prostok
 
 
 
-    tablica = Klasy.Prostokąt(anchor = (screen_width//2 - tablica_szerokość//2,screen_height*1//5-tablica_wysokość//2)
+    tablica = Klasy.Prostokąt(anchor = [screen_width//2 - tablica_szerokość//2,screen_height*1//5-tablica_wysokość//2]
                             ,color = tablica_kolor, width = tablica_szerokość, height = tablica_wysokość
                             ) #Stwórz obiekt klasy Prostokąt, który będzie reprezentował tablicę.
     
@@ -171,7 +171,7 @@ def NarysujEkranRozgrywki() -> tuple[pg.Surface, Klasy.Prostokąt, Klasy.Prostok
 
 
   
-    kosz = Klasy.Prostokąt(anchor = (screen_width//2 - kosz_szerokość//2,screen_height*1//5+tablica_wysokość//2-kosz_wysokość), 
+    kosz = Klasy.Prostokąt(anchor = [screen_width//2 - kosz_szerokość//2,screen_height*1//5+tablica_wysokość//2-kosz_wysokość], 
                            color = kosz_kolor, width = kosz_szerokość, 
                     height =  kosz_wysokość) #Stwórz obiekt klasy prostokąt, który będzie reprezentował obręcz.
                                             #Uwaga, Atrybut anchor będzie zależny od atrybutu anchor obiektu tablica. Ma to znaczenie, gdy tablica będzie się ruszała
@@ -211,7 +211,7 @@ Działo.NarysujArmatę(screen = game_screen, color = [0, 0,0]) #Teraz narysuj t�
 shots_attempted:int = 0  #Liczba oddanych strzałów (celnych lub niecelnych)
 shots_scored:int = 0 #Celne strzały.
 game_time:float = 0 #Czas trwania gry (od momentu nacisnięcia przycisku "GRAJ")
-max_shots:int = 8 #Maksymalna liczba dozwolonych strzałów. Po przekroczeniu jej, ekran rozgrywki przechodzi do ekranu końcowego.
+max_shots:int = 20 #Maksymalna liczba dozwolonych strzałów. Po przekroczeniu jej, ekran rozgrywki przechodzi do ekranu końcowego.
 #Uwaga, liczba zdjęc musi być dzielnikiem liczby max_shots.
 
 #Zmienna mówiąca, czy kula zostala wystrzelona.
@@ -340,6 +340,32 @@ while running:
                 shot_ball = False
             else:
                 break
+        
+        
+        ### Schemat odbijania się kosza.
+        if tablica.center[0] <= tablica.width/2 or window_size[0] - tablica.center[0]<=tablica.width/2:
+            tablica.speed = -tablica.speed
+         
+        #Aktualizuj współrzedne
+        tablica.ZmieńWspółrzędne()
 
+        #Nadaj odpowiednią szybkość koszu
+        if 8 >= shots_scored >= 3 and tablica.speed == 0:
+            tablica.speed  = 0.1
+
+        elif 15 >= shots_scored >= 9 and abs(tablica.speed) == 0.1:
+            tablica.speed = tablica.speed * 2
+
+        elif shots_scored >= 16 and abs(tablica.speed) == 0.2:
+            tablica.speed = tablica.speed * 2
+
+        
+
+
+        kosz = Klasy.Prostokąt(anchor = [ tablica.width/2 - kosz.width/2 + tablica.anchor[0],   screen_height*1//5+tablica_wysokość//2-kosz_wysokość], 
+                           color = kosz_kolor, width = kosz_szerokość, 
+                    height =  kosz_wysokość) 
+
+        
             
         pg.display.update()
