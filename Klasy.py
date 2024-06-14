@@ -1,12 +1,17 @@
 import pygame as pg
 import numpy as np
-#from Stałe import screen_width, screen_height
-
+from Stałe import screen_width, screen_height, window_size
+from Stałe import ORANGE, WHITE, MEDIUM_GRAY, BLACK, LIGHT_BLUE
+from Stałe import font, small_font, mini_font
+from Stałe import end_button_width, end_button_height, end_button_color, end_button_text_color
+from Stałe import tablica_kolor, tablica_szerokość, tablica_wysokość
+from Stałe import kosz_kolor, kosz_szerokość, kosz_wysokość, k
 
 
 
 class Prostokąt():
-    def __init__(self, anchor:list[float], color:list[int], width:float, height:float):
+    def __init__(self, anchor:list[float], color:list[int], width:float, height:float, ile_zmniejszeń:int = 0, ile_zmian_szybkosci:int = 0
+                 ):
         self.anchor = anchor
         self.color = color
 
@@ -18,26 +23,48 @@ class Prostokąt():
         #Szybkość poruszania się tablicy w poziomie.
         self.speed = 0
 
+        #Zmienna mówiąca, ile razy zmniejszył się prostokąt.
+        self.ile_zmniejszeń = ile_zmniejszeń
+
+        #Zmienna mówiąca, ile razy zmieniła się szybkość prostokąta..
+        self.ile_zmian_szybkosci = ile_zmian_szybkosci
         
 
 
 
-
-    def NarysujProstokąt(self,screen):    
+    #To jest metoda dla tablicy i dla obręczy.
+    def NarysujProstokąt(self,screen:pg.surface):    
         tablica = pg.Rect(self.anchor[0], self.anchor[1], self.width, self.height)
         
         pg.draw.rect(surface = screen, 
                      color = self.color, 
                      rect = tablica)
         
+    #To jest metoda dla tablicy i dla obręczy. (Głównie dla tablicy.)
     def ZmieńWspółrzędne(self):
         self.anchor[0] = self.anchor[0] + self.speed
 
         self.center = (self.anchor[0] + self.width/2, self.anchor[1]-self.height/2)
 
+    #To jest metoda dla obręczy.
+    def PomniejszObręcz(self, shots_scored:int, max_shots:int):
+        for i in range(1,5):
+             if shots_scored >= max_shots//4*(i) and self.ile_zmniejszeń == i-1:
+                self.width = self.width * k
+                self.ile_zmniejszeń += 1
 
 
-        
+    #To jest metoda dla tablicy i obręczy. (Głównie dla tablicy)
+    def ZmieńSzybkość(self, shots_scored:int, max_shots:int):
+        for i in range(1, 5):
+            if shots_scored >= max_shots//4*(i) and self.ile_zmian_szybkosci == i-1:
+                if i == 1:
+                    self.speed = 0.1
+                else:
+                    self.speed = self.speed * 2
+                
+                self.ile_zmian_szybkosci += 1
+
 
 
 class Point():

@@ -40,3 +40,7 @@ tablica_szerokość = 150
 kosz_kolor = (255,0,0) #Kolor kosza w kodowaniu RGB
 kosz_wysokość = 60 #Wysokość kosza
 kosz_szerokość = 80 #Szerokość kosza
+
+
+#Czynnik zmniejszający szerokość i wysokość obręczy.
+k:float = 0.9

@@ -6,7 +6,7 @@ from Stałe import ORANGE, WHITE, MEDIUM_GRAY, BLACK, LIGHT_BLUE
 from Stałe import font, small_font, mini_font
 from Stałe import end_button_width, end_button_height, end_button_color, end_button_text_color
 from Stałe import tablica_kolor, tablica_szerokość, tablica_wysokość
-from Stałe import kosz_kolor, kosz_szerokość, kosz_wysokość
+from Stałe import kosz_kolor, kosz_szerokość, kosz_wysokość, k
 import pathlib as path #Przyda nam się do uzyskiwania ścieżki do folderu z tłami.
 
 
@@ -26,6 +26,7 @@ scoring_theme = pg.mixer.Sound(file = "ScoringSound.mp3")
 pg.init()
 ## ------------------------  SEKCJA DOTYCZĄCA EKRANU STARTOWEGO ------------------------
 
+piwo = False
 
 def pokaz_ekran_startowy() -> None:
     """"Zadaniem tej funkcji jest stworzenie okna początkowego, które zawiera"""
@@ -211,7 +212,7 @@ Działo.NarysujArmatę(screen = game_screen, color = [0, 0,0]) #Teraz narysuj t�
 shots_attempted:int = 0  #Liczba oddanych strzałów (celnych lub niecelnych)
 shots_scored:int = 0 #Celne strzały.
 game_time:float = 0 #Czas trwania gry (od momentu nacisnięcia przycisku "GRAJ")
-max_shots:int = 20 #Maksymalna liczba dozwolonych strzałów. Po przekroczeniu jej, ekran rozgrywki przechodzi do ekranu końcowego.
+max_shots:int = 12 #Maksymalna liczba dozwolonych strzałów. Po przekroczeniu jej, ekran rozgrywki przechodzi do ekranu końcowego.
 #Uwaga, liczba zdjęc musi być dzielnikiem liczby max_shots.
 
 #Zmienna mówiąca, czy kula zostala wystrzelona.
@@ -348,24 +349,18 @@ while running:
          
         #Aktualizuj współrzedne
         tablica.ZmieńWspółrzędne()
+        tablica.ZmieńSzybkość(shots_scored = shots_scored,
+                              max_shots = max_shots)
 
-        #Nadaj odpowiednią szybkość koszu
-        if 8 >= shots_scored >= 3 and tablica.speed == 0:
-            tablica.speed  = 0.1
 
-        elif 15 >= shots_scored >= 9 and abs(tablica.speed) == 0.1:
-            tablica.speed = tablica.speed * 2
 
-        elif shots_scored >= 16 and abs(tablica.speed) == 0.2:
-            tablica.speed = tablica.speed * 2
-
-        
 
 
         kosz = Klasy.Prostokąt(anchor = [ tablica.width/2 - kosz.width/2 + tablica.anchor[0],   screen_height*1//5+tablica_wysokość//2-kosz_wysokość], 
-                           color = kosz_kolor, width = kosz_szerokość, 
-                    height =  kosz_wysokość) 
-
+                           color = kosz_kolor, width = kosz.width, 
+                    height =  kosz.height, ile_zmniejszeń = kosz.ile_zmniejszeń) 
+        kosz.PomniejszObręcz(shots_scored = shots_scored,
+                             max_shots = max_shots)
         
             
         pg.display.update()
