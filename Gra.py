@@ -37,6 +37,17 @@ def pokaz_ekran_startowy() -> None:
     """"""
     running: bool = True
     tytul_text: pg.Surface = font.render("Koszmata 3.0", True, WHITE)
+
+
+    autorzy_text1:pg.Surface = mini_font.render("Autorzy: Natalia Jendrek, Natalia Koczkodaj, ",True, WHITE)
+    autorzy_text2:pg.Surface = mini_font.render("Dominik Kowalczyk, Paweł Nowak, Szymon Smoła.",True, WHITE)
+
+
+    zrodlo_zdjec1: pg.Surface = mini_font.render("Wszystkie zdjęcia zostały wygenerowane przez ",True, WHITE)
+    zrodlo_zdjec2: pg.Surface = mini_font.render("Copilota za pomocą modelu DALL-E 2",True, WHITE)
+
+
+
     graj_text: pg.Surface = font.render("GRAJ", True, WHITE)
     graj_rect: pg.Rect = graj_text.get_rect(center=(screen_width // 2, screen_height // 2))
     polecenie_text: pg.Surface = small_font.render("Kliknij GRAJ aby rozpocząć grę", True, MEDIUM_GRAY)
@@ -62,6 +73,15 @@ def pokaz_ekran_startowy() -> None:
 
         intro_screen.fill(LIGHT_BLUE) #Wypełnij okno startowe na pomarańczowo
         intro_screen.blit(tytul_text, (screen_width // 2 - tytul_text.get_width() // 2, 150)) #Dodaj tytuł gry na powierzchnie.
+        intro_screen.blit(autorzy_text1, (50, 250)) #Dodaj autorów na powierzchnie.
+        intro_screen.blit(autorzy_text2, (25, 270)) #Dodaj autorów  na powierzchnie.
+
+        intro_screen.blit(zrodlo_zdjec1, (50, window_size[1]-50)) #Dodaj informacje o źródle zdjęć.
+        intro_screen.blit(zrodlo_zdjec2, (65, window_size[1]-30)) #Dodaj informacje o źródle zdjęć.
+
+
+
+
         intro_screen.blit(graj_text, graj_rect) #Dodaj przycisk graj na powierzchnie
 
         intro_screen.blit(polecenie_text, polecenie_rect) #Dodaj okno z zachętą do rozpoczęcia gry.
