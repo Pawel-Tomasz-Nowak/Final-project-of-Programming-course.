@@ -7,10 +7,9 @@ pg.init()
 Color = Tuple[int, int, int]
 WHITE: Color = (255, 255, 255)
 MEDIUM_GRAY: Color = (100, 100, 100)
-ORANGE: Color = (255, 131, 32)
-BLACK: Color = (0, 0, 0)
-LIGHT_BLUE: Color = (173, 216, 230)
-
+ORANGE: Color = (219, 62, 56)
+BLACK: Color = (44, 50, 51)
+LIGHT_BLUE:Color = (152, 159, 220)
 
 # Zadeklaruj szerokość i wysokość okna.
 screen_width: int = 400

@@ -14,12 +14,11 @@ import pathlib as path #Przyda nam się do uzyskiwania ścieżki do folderu z t�
 pg.mixer.init()
 
 #Wczytaj dźwięk eksplozji.
-explosion_sound = pg.mixer.Sound(file = "Dźwięk wystrzału.mp3")
+explosion_sound = pg.mixer.Sound(file = path.Path(r"Dzwieki")/"Dźwięk wystrzału.mp3")
 #Wczytaj jingiel końcowy
-ending_theme = pg.mixer.Sound(file = "Jingiel końcowy.mp3")
+ending_theme = pg.mixer.Sound(file = path.Path(r"Dzwieki")/"Jingiel końcowy.mp3")
 #Wczytaj dźwięk trafienia.
-scoring_theme = pg.mixer.Sound(file = "ScoringSound.mp3")
-
+scoring_theme = pg.mixer.Sound(file =path.Path(r"Dzwieki")/"ScoringSound.mp3")
 
 
 #Inicjalizacja Pygame
@@ -61,7 +60,7 @@ def pokaz_ekran_startowy() -> None:
                 if zdarzenie.button == 1 and graj_rect.collidepoint(zdarzenie.pos):
                     running = False
 
-        intro_screen.fill(ORANGE) #Wypełnij okno startowe na pomarańczowo
+        intro_screen.fill(LIGHT_BLUE) #Wypełnij okno startowe na pomarańczowo
         intro_screen.blit(tytul_text, (screen_width // 2 - tytul_text.get_width() // 2, 150)) #Dodaj tytuł gry na powierzchnie.
         intro_screen.blit(graj_text, graj_rect) #Dodaj przycisk graj na powierzchnie
 
@@ -77,7 +76,7 @@ pokaz_ekran_startowy()
 def draw_text(text:str, 
               font:pg.font.Font, color:tuple[int], 
               surface:pg.Surface, 
-              x:float, y:float):
+              x:float, y:float) ->None:
     
     """Ta funkcja rysuje tekst o treści 'text', którego czcionka jest określona przez argument font, a kolor jest określony
     przez parametr color. 
@@ -89,23 +88,34 @@ def draw_text(text:str,
     textrect.center = (x, y)
     surface.blit(textobj, textrect)
 
+def ObliczCzasTrwaniaGry(czastrwaniagry:float) -> tuple[int, int]:
+    """Funkcja oblicza ile minęło pełnych minut oraz pełnych sekund od momentu rozpoczęcia rozgrywki."""
+    game_time_minutes:int = int(czastrwaniagry // 60)
+    game_time_seconds:int = int(czastrwaniagry % 60)
+
+
+    return game_time_minutes, game_time_seconds
+
 
 #Ekran wyświetlany pod koniec gry.
 def game_over_screen() -> bool:
     """"Funkcja ta zajmuje się wyświetlaniem ekranu końcowego, na którym wyświetlane są podstawowe
-    statystyki, takie jak: dokładność nasza, liczba zdobytych przez nas punktów oraz czas gry. 
-    Zwraca wartość bool równa True, jeżeli użytkownik chce zagrać ponownie , lub wartość False, gdy użytkownik ma dość gry."""
+    statystyki, takie jak: nasza dokładność, liczba zdobytych przez nas punktów oraz czas gry. 
+    Zwraca wartość bool równa True, jeżeli użytkownik chce zagrać ponownie, lub wartość False, gdy użytkownik ma dość gry."""
     global game_time, shots_attempted, shots_scored
     
 
     #pg.time.get_ticks() zwraca wynik w milisekundach, więc zamień tę wartość na sekundy, dzieląc przez 1000.
     game_time = (pg.time.get_ticks() - czas_startu_gry)/1000
+    
+    game_time_minutes, game_time_seconds = ObliczCzasTrwaniaGry(game_time)  #Oblicz ile pełnych minut oraz ile pełnych sekund minęło 
+                                                                                  #Od startu gry do końca gry.
+
     end_button_rect = pg.Rect((window_size[0] - end_button_width) // 2, window_size[1] - 100, end_button_width, end_button_height)
 
     #Policz dokładnośc naszych strzałów, zaokrąglij ją.
     accuracy:float =  round((shots_scored / shots_attempted) * 100,2)
-    game_time_minutes:int = int(game_time // 60)
-    game_time_seconds:int = int(game_time % 60)
+
 
     
     #Motornicza zmienna, utrzymująca program przy życiu.
@@ -158,10 +168,7 @@ def NarysujEkranRozgrywki() -> tuple[pg.Surface, Klasy.Prostokąt, Klasy.Prostok
     screen: pg.Surface = pg.display.set_mode(window_size)
 
 
-    screen.fill(color = ORANGE, )
-
-
-
+    screen.fill(color = WHITE, )
 
 
     tablica = Klasy.Tablica(anchor = [screen_width//2 - tablica_szerokość//2,screen_height*1//5-tablica_wysokość//2],
@@ -178,6 +185,9 @@ def NarysujEkranRozgrywki() -> tuple[pg.Surface, Klasy.Prostokąt, Klasy.Prostok
     return screen, tablica, kosz
 
 def ZnajdźTła() -> tuple[list[pg.Surface], int]:
+    """Funkcja zajmuje się znalezieniem listy wszystkich tieł, 
+    które będą zmieniały się w grze
+    """
     Folder_Z_Tłami = path.Path(r"TłaDoGry")
 
     ListaTeł:int = len([plik for plik in Folder_Z_Tłami.iterdir() if plik.is_file()]) 
@@ -198,7 +208,7 @@ game_screen, tablica, kosz  = NarysujEkranRozgrywki()
 Działo:Klasy.Cannon =Klasy.Cannon(x0 = window_size[0]/2, y0=window_size[1]-125, #Po naciśnieciu przycisku start stwórz armatę
                                   width = 50,  height = 100,) #która domyślnie jest wypionizowana (tj. jej nachylenie wynosi 90 stopni)
 
-Działo.NarysujArmatę(screen = game_screen, color = [0, 0,0]) #Teraz narysuj tę armatę.
+Działo.NarysujArmatę(screen = game_screen, color = BLACK) #Teraz narysuj tę armatę.
 
 
 
@@ -223,6 +233,11 @@ running:bool = True
 
 ZdjęciaTeł, OdstępPunktowy = ZnajdźTła()
 
+PasekDolnyLewy = Klasy.Prostokąt(anchor = [10, 690], color = BLACK, width =150 , height = 50)
+PasekDolnyPrawy = Klasy.Prostokąt(anchor = [window_size[0] - 150-10, 690], color = BLACK, width =150 , height = 50)
+
+
+
 
 while running:
         
@@ -241,7 +256,7 @@ while running:
         if kąt is not False:
             Działo.slope = kąt
 
-        Działo.NarysujArmatę(screen = game_screen, color = [0,0,0])
+        Działo.NarysujArmatę(screen = game_screen, color = BLACK)
 
                 
         for event in pg.event.get():
@@ -313,10 +328,25 @@ while running:
                                  color = ORANGE) #Skasuj kulkę, gdy dotknie ona tablicy.
                 
 
-            
+        #Czas gry
+        game_time = (pg.time.get_ticks() - czas_startu_gry)/1000
+        minutes, seconds = ObliczCzasTrwaniaGry(game_time)
+    
         #Napraw kosz i tablicę.
         tablica.NarysujProstokąt(screen = game_screen)
         kosz.NarysujProstokąt(screen = game_screen)
+
+        PasekDolnyLewy.NarysujProstokąt(screen = game_screen) #Lewy dolny prostokąt, liczący liczbę punktów zdobytych na liczbę oddanych strzałów
+        PasekDolnyPrawy.NarysujProstokąt(screen = game_screen) #Prawy dolny prostokąt, liczący czas trwania gry.
+
+
+        draw_text(text = f"{minutes}:{seconds}", font= small_font, color = LIGHT_BLUE, surface = game_screen,
+                  x = PasekDolnyPrawy.anchor[0] + 75, y = PasekDolnyPrawy.anchor[1]+25) #Dodaj etykiete na PasekLewyDolny.
+        
+        draw_text(text = f"{shots_scored}/{shots_attempted}", font= small_font, color = LIGHT_BLUE, surface = game_screen,
+                  x = PasekDolnyLewy.anchor[0] + 75, y = PasekDolnyLewy.anchor[1]+25) #Dodaj etykietę na PrawyDolnyPrawy.
+        
+
 
 
         
@@ -349,14 +379,14 @@ while running:
 
 
 
-
+        #Narysuj nową obręcz
         kosz = Klasy.Obrecz(anchor = [ tablica.width/2 - kosz.width/2 + tablica.anchor[0],   screen_height*1//5+tablica_wysokość//2-kosz_wysokość], 
-                           color = kosz_kolor, width = kosz.width, 
+                           color = ORANGE, width = kosz.width, 
                     height =  kosz.height, ile_zmniejszeń = kosz.ile_zmniejszeń) 
         
-
+        #Zmniejsz obręcz
         kosz.PomniejszObręcz(shots_scored = shots_scored,
                              max_shots = max_shots)
         
             
-        pg.display.update()
+        pg.display.update() #Zaaktualizuj ekran.
