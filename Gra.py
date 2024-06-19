@@ -164,19 +164,14 @@ def NarysujEkranRozgrywki() -> tuple[pg.Surface, Klasy.Prostokąt, Klasy.Prostok
 
 
 
-    tablica = Klasy.Prostokąt(anchor = [screen_width//2 - tablica_szerokość//2,screen_height*1//5-tablica_wysokość//2]
-                            ,color = tablica_kolor, width = tablica_szerokość, height = tablica_wysokość
-                            ) #Stwórz obiekt klasy Prostokąt, który będzie reprezentował tablicę.
-    
-    tablica.NarysujProstokąt(screen = screen) #Narysuj tę tablicę.
+    tablica = Klasy.Tablica(anchor = [screen_width//2 - tablica_szerokość//2,screen_height*1//5-tablica_wysokość//2],
+                            color = tablica_kolor, width = tablica_szerokość, height = tablica_wysokość) #Definicja obiektu typu Tablica
+    tablica.NarysujProstokąt(screen = screen) #Rysowanie tablicy
 
 
+    kosz = Klasy.Obrecz(anchor = [screen_width//2 - kosz_szerokość//2,screen_height*1//5+tablica_wysokość//2-kosz_wysokość],
+                        color = kosz_kolor, width = kosz_szerokość, height = kosz_wysokość) #Definicja obiektu typu Obrecz.
   
-    kosz = Klasy.Prostokąt(anchor = [screen_width//2 - kosz_szerokość//2,screen_height*1//5+tablica_wysokość//2-kosz_wysokość], 
-                           color = kosz_kolor, width = kosz_szerokość, 
-                    height =  kosz_wysokość) #Stwórz obiekt klasy prostokąt, który będzie reprezentował obręcz.
-                                            #Uwaga, Atrybut anchor będzie zależny od atrybutu anchor obiektu tablica. Ma to znaczenie, gdy tablica będzie się ruszała
-    
 
     kosz.NarysujProstokąt(screen = screen) #Rysowanie obręczy (inaczej nazywany koszem)
 
@@ -346,19 +341,20 @@ while running:
         ### Schemat odbijania się kosza.
         if tablica.center[0] <= tablica.width/2 or window_size[0] - tablica.center[0]<=tablica.width/2:
             tablica.speed = -tablica.speed
-         
-        #Aktualizuj współrzedne
-        tablica.ZmieńWspółrzędne()
-        tablica.ZmieńSzybkość(shots_scored = shots_scored,
-                              max_shots = max_shots)
+     
+        tablica.ZmieńWspółrzędne() #Aktualizuj współrzędne.
+        tablica.ZmieńSzybkość(shots_scored = shots_scored, max_shots = max_shots) #Zaaktualizuj szybkość tablicy.
+        
 
 
 
 
 
-        kosz = Klasy.Prostokąt(anchor = [ tablica.width/2 - kosz.width/2 + tablica.anchor[0],   screen_height*1//5+tablica_wysokość//2-kosz_wysokość], 
+        kosz = Klasy.Obrecz(anchor = [ tablica.width/2 - kosz.width/2 + tablica.anchor[0],   screen_height*1//5+tablica_wysokość//2-kosz_wysokość], 
                            color = kosz_kolor, width = kosz.width, 
                     height =  kosz.height, ile_zmniejszeń = kosz.ile_zmniejszeń) 
+        
+
         kosz.PomniejszObręcz(shots_scored = shots_scored,
                              max_shots = max_shots)
         

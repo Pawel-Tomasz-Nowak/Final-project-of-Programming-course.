@@ -10,51 +10,38 @@ from Stałe import kosz_kolor, kosz_szerokość, kosz_wysokość, k
 
 
 class Prostokąt():
-    def __init__(self, anchor:list[float], color:list[int], width:float, height:float, ile_zmniejszeń:int = 0, ile_zmian_szybkosci:int = 0
-                 ):
-        self.anchor = anchor
-        self.color = color
+    def __init__(self, anchor:list[float], color:list[int], width:float, height:float):
+        self.anchor = anchor #TO
+        self.color = color #TO
 
-        self.width = width
-        self.height = height
+        self.width = width #TO
+        self.height = height #TO
 
-        self.center = (self.anchor[0] + width/2, self.anchor[1]-height/2)
+        self.center = (self.anchor[0] + width/2, self.anchor[1]-height/2) #TO
 
         #Szybkość poruszania się tablicy w poziomie.
-        self.speed = 0
-
-        #Zmienna mówiąca, ile razy zmniejszył się prostokąt.
-        self.ile_zmniejszeń = ile_zmniejszeń
-
-        #Zmienna mówiąca, ile razy zmieniła się szybkość prostokąta..
-        self.ile_zmian_szybkosci = ile_zmian_szybkosci
+        self.speed = 0 #T
         
 
-
-
-    #To jest metoda dla tablicy i dla obręczy.
-    def NarysujProstokąt(self,screen:pg.surface):    
+    
+    def NarysujProstokąt(self,screen:pg.Surface):
+        """Metoda ta rysuje prostokąt na ekranie screen."""    
         tablica = pg.Rect(self.anchor[0], self.anchor[1], self.width, self.height)
         
         pg.draw.rect(surface = screen, 
                      color = self.color, 
                      rect = tablica)
         
-    #To jest metoda dla tablicy i dla obręczy. (Głównie dla tablicy.)
-    def ZmieńWspółrzędne(self):
-        self.anchor[0] = self.anchor[0] + self.speed
 
-        self.center = (self.anchor[0] + self.width/2, self.anchor[1]-self.height/2)
+class Tablica(Prostokąt):
+    def __init__(self, anchor:list[float], color:list[int], width:float, height:float, speed:float = 0,ile_zmian_szybkosci:int = 0):
+        super().__init__(anchor = anchor, color = color, width = width, height = height)
+        self.ile_zmian_szybkosci = ile_zmian_szybkosci
+        self.speed = speed
 
-    #To jest metoda dla obręczy.
-    def PomniejszObręcz(self, shots_scored:int, max_shots:int):
-        for i in range(1,5):
-             if shots_scored >= max_shots//4*(i) and self.ile_zmniejszeń == i-1:
-                self.width = self.width * k
-                self.ile_zmniejszeń += 1
+       #To jest metoda dla tablicy.
 
 
-    #To jest metoda dla tablicy i obręczy. (Głównie dla tablicy)
     def ZmieńSzybkość(self, shots_scored:int, max_shots:int):
         for i in range(1, 5):
             if shots_scored >= max_shots//4*(i) and self.ile_zmian_szybkosci == i-1:
@@ -65,18 +52,52 @@ class Prostokąt():
                 
                 self.ile_zmian_szybkosci += 1
 
+    def ZmieńWspółrzędne(self):
+        """Metoda ta aktualizuje pierwsza współrzędna punktu kotwiczego o wartość speed. 
+        Przez pierwszą fazę gdy speed = 0, zatem wartość
+        pierwszej współrzędnej się nie zmienia
+        """
+        
+        self.anchor[0] = self.anchor[0] + self.speed #Zmień x-ową współrzędna.
 
+        self.center = (self.anchor[0] + self.width/2, self.anchor[1]-self.height/2) #Zaaktualizuj środek tablicy.
+
+ 
+
+
+class Obrecz(Prostokąt):
+
+    def __init__(self, anchor:list[float], color:list[int], width:float, height:float, ile_zmniejszeń:int =0):
+        """Inicjalizacja obiektu klasy Obrecz"""
+        super().__init__(anchor = anchor, color = color, width = width, height = height)
+
+        self.ile_zmniejszeń = ile_zmniejszeń
+
+       #To jest metoda dla obręczy.
+    def PomniejszObręcz(self, shots_scored:int, max_shots:int) -> None:
+        """Metoda ta pomniejsza szerokość obręczy w zależności od liczby trafionych strzałów.
+        Co max_shots//4 trafionych strzałów szerokość obręczy zmniejsza się o (1-k) procent
+        """
+
+        for i in range(1,5):
+             if shots_scored >= max_shots//4*(i) and self.ile_zmniejszeń == i-1:
+                self.width = self.width * k
+                self.ile_zmniejszeń += 1
+
+
+
+        
 
 class Point():
     def __init__(self, x:float, y:float) ->None:
-        self.x:float = x
-        self.y:float = y
+        self.x:float = x #Współrzędna x-owa punktu.
+        self.y:float = y #Współrzędna y-owa punktu.
 
 
 
 
 class CannonBall():
-    def __init__(self, x:float, y:float, r:float, speed:float, alpha:float):
+    def __init__(self, x:float, y:float, r:float, speed:float, alpha:float) -> None:
         #Współrzędne środka kuli.
         self.x = x
         self.y = y
@@ -94,13 +115,13 @@ class CannonBall():
 
 
 
-    def NarysujKule(self, screen: pg.Surface, color: list[int] = (100, 100, 100)):
+    def NarysujKule(self, screen: pg.Surface, color: list[int] = (100, 100, 100)) -> None:
         pg.draw.circle(surface = screen, color = color, 
                        center = (self.x, self.y), radius = self.r)
         
 
 
-    def AktualizujWspółrzędne(self):
+    def AktualizujWspółrzędne(self) -> None:
         self.x = self.x + self.dx
         self.y = self.y - self.dy
         
@@ -121,7 +142,7 @@ class Cannon():
 
 
 
-    def ZnajdźWierzchołki(self, kąt: float = 0):
+    def ZnajdźWierzchołki(self, kąt: float = 0) -> None:
         #Policz pierwszy wierzchołek.
         x1 = self.x0 - np.sin(kąt)*self.width/2
         y1 = self.y0 - np.cos(kąt)*self.width/2
@@ -154,7 +175,7 @@ class Cannon():
     @staticmethod
     #Domyślnie x2 y2 to współrzędne myszki.
     #W skrajnym przypadku, gdy współrzedna y-oka myszki jest mniejsza niż współrzędna y-owa środka armaty, zwróć wartość logiczną False.
-    def PoliczKąt(x1:float, y1:float) -> float | bool:
+    def PoliczKąt(x1:float, y1:float) -> float | int:
         x2, y2 = pg.mouse.get_pos()
 
         if y2 < y1:
