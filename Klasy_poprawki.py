@@ -1,6 +1,6 @@
 import pygame as pg
 import numpy as np
-from Stałe import k
+from Stałe_poprawki import k
 
 
 class Prostokąt:
