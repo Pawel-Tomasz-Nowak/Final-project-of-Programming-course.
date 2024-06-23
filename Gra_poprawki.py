@@ -1,12 +1,12 @@
 import pygame as pg  # Główny moduł
 import sys
-import Klasy  # Moduł zawierający wszystkie klasy wykorzystywane w grze.
-from Stałe import screen_width, screen_height, window_size
-from Stałe import ORANGE, WHITE, MEDIUM_GRAY, BLACK, LIGHT_BLUE
-from Stałe import font, small_font, mini_font
-from Stałe import end_button_width, end_button_height, end_button_color, end_button_text_color
-from Stałe import tablica_kolor, tablica_szerokość, tablica_wysokość
-from Stałe import kosz_kolor, kosz_szerokość, kosz_wysokość
+import Klasy_poprawki  # Moduł zawierający wszystkie klasy wykorzystywane w grze.
+from Stałe_poprawki import screen_width, screen_height, window_size
+from Stałe_poprawki import ORANGE, WHITE, MEDIUM_GRAY, BLACK, LIGHT_BLUE
+from Stałe_poprawki import font, small_font, mini_font
+from Stałe_poprawki import end_button_width, end_button_height, end_button_color, end_button_text_color
+from Stałe_poprawki import tablica_kolor, tablica_szerokość, tablica_wysokość
+from Stałe_poprawki import kosz_kolor, kosz_szerokość, kosz_wysokość
 import pathlib as path  # Przyda nam się do uzyskiwania ścieżki do folderu z tłami.
 
 # Zainicjuj mikser dźwięku
