@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 import pygame as pg
-from Klasy import Prostokąt, Tablica, Obrecz, Point, CannonBall, Cannon
+from Klasy_poprawki import Prostokąt, Tablica, Obrecz, Point, CannonBall, Cannon
 
 # Inicjalizacja Pygame
 pg.init()
