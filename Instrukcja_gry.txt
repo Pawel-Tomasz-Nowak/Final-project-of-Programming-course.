@@ -6,7 +6,7 @@
 5. Piłka ma prawo odbić się 2 razy od ścian. Przy trzecim odbiciu piłka znika i nie otrzymujemy punktu. 
 6. Jeżeli piłka dotknie sufitu, to znika i również nie otrzymujemy punktu.
 7. Jeżeli przy oddanym strzale piłka trafiła w biały prostokąt (tablicę), zamiast w czerwony (kosz), znów nie otrzymujemy punktu.
-8. Podczas jednej tury możemy wystrzelić 5 piłek. Po wystrzeleniu ostatniej gra wyświetla ekran końcowy z naszym czasem (liczonym od momentu kliknięcia przycisku graj), naszymi punktami, oraz ze skutecznością strzałów w procentach.
+8. Podczas jednej tury możemy wystrzelić 12 piłek. Po wystrzeleniu ostatniej gra wyświetla ekran końcowy z naszym czasem (liczonym od momentu kliknięcia przycisku graj), naszymi punktami, oraz ze skutecznością strzałów w procentach.
 9. Na ekranie końcowym pojawia się również przycisk (zagraj ponownie), po którego kliknięciu zostaniemy przeniesieni na ekran startowy (ten z wielkim napisem GRAJ)
 
 
