@@ -11,6 +11,6 @@
 
 
 Do poprawnego uruchomienia gry potrzebne są następujące biblioteki:
-pygame, sys.
+pygame, sys., pytest, pathlib, numpy, typing, 
 (Lista potrzebnych bibliotek może się zmienić, naturalnie, w przyszłości)
 

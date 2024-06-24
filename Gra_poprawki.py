@@ -177,7 +177,7 @@ def game_over_screen() -> bool:
 
 # # ------------------------ SEKCJA GŁÓWNA GRY ------------------------
 
-def narysuj_ekran_rozgrywki() -> tuple[pg.Surface, Klasy.Prostokąt, Klasy.Prostokąt]:
+def narysuj_ekran_rozgrywki() -> tuple[pg.Surface, Klasy_poprawki.Prostokąt, Klasy_poprawki.Prostokąt]:
     """Funkcja ta rysuje ekran, na którym ma miejsce główna rozgrywka.
     """
     # Stwórz ekran, na którym będzie pojawiać się piłka oraz armata i inne atrakcje.
@@ -185,12 +185,12 @@ def narysuj_ekran_rozgrywki() -> tuple[pg.Surface, Klasy.Prostokąt, Klasy.Prost
 
     screen.fill(color=WHITE, )
 
-    tablica = Klasy.Tablica(
+    tablica = Klasy_poprawki.Tablica(
         anchor=[screen_width // 2 - tablica_szerokość // 2, screen_height * 1 // 5 - tablica_wysokość // 2],
         color=tablica_kolor, width=tablica_szerokość, height=tablica_wysokość)  # Definicja obiektu typu Tablica
     tablica.narysuj_prostokąt(screen=screen)  # Rysowanie tablicy
 
-    kosz = Klasy.Obrecz(anchor=[screen_width // 2 - kosz_szerokość // 2,
+    kosz = Klasy_poprawki.Obrecz(anchor=[screen_width // 2 - kosz_szerokość // 2,
                                 screen_height * 1 // 5 + tablica_wysokość // 2 - kosz_wysokość],
                         color=kosz_kolor, width=kosz_szerokość, height=kosz_wysokość)  # Definicja obiektu typu Obręcz.
 
@@ -217,7 +217,7 @@ def znajdź_tła() -> tuple[list[pg.Surface], int]:
 # kosz jest z kolei celem, w którego trafienie jest najważniejszym zadaniem gry.
 game_screen, tablica, kosz = narysuj_ekran_rozgrywki()
 
-Działo: Klasy.Cannon = Klasy.Cannon(x0=window_size[0] / 2, y0=window_size[1] - 125,
+Działo: Klasy_poprawki.Cannon = Klasy_poprawki.Cannon(x0=window_size[0] / 2, y0=window_size[1] - 125,
                                     # Po naciśnięciu przycisku start stwórz armatę
                                     width=50,
                                     height=100, )  # która domyślnie jest wypionowana (jej nachylenie wynosi 90 stopni)
@@ -242,8 +242,8 @@ running: bool = True
 
 ZdjęciaTeł, OdstępPunktowy = znajdź_tła()
 
-PasekDolnyLewy = Klasy.Prostokąt(anchor=[10, 690], color=BLACK, width=150, height=50)
-PasekDolnyPrawy = Klasy.Prostokąt(anchor=[window_size[0] - 150 - 10, 690], color=BLACK, width=150, height=50)
+PasekDolnyLewy = Klasy_poprawki.Prostokąt(anchor=[10, 690], color=BLACK, width=150, height=50)
+PasekDolnyPrawy = Klasy_poprawki.Prostokąt(anchor=[window_size[0] - 150 - 10, 690], color=BLACK, width=150, height=50)
 
 while running:
 
@@ -251,10 +251,10 @@ while running:
                      dest=(screen_width // 2 - 512, screen_height // 2 - 512))
 
     # Tworzenie nowego działa.
-    Działo = Klasy.Cannon(window_size[0] / 2, window_size[1] - 125, 50, 100)
+    Działo = Klasy_poprawki.Cannon(window_size[0] / 2, window_size[1] - 125, 50, 100)
 
     # Policz kąt nachylenia armaty.
-    kąt = Klasy.Cannon.policz_kąt(Działo.x0, Działo.y0)
+    kąt = Klasy_poprawki.Cannon.policz_kąt(Działo.x0, Działo.y0)
 
     # Jeżeli kąt nie jest równy False (czyli kąt nie jest równy 0 i nie jest równy pi), to zmień wartość kąta.
     # Jeżeli kąt jest równy False, to kąt domyślnie jest równy pi/2, czyli armata jest wypionowana.
@@ -365,7 +365,7 @@ while running:
     tablica.zmień_szybkość(shots_scored=shots_scored, max_shots=max_shots)  # Zaktualizuj szybkość tablicy.
 
     # Narysuj nową obręcz
-    kosz = Klasy.Obrecz(anchor=[tablica.width / 2 - kosz.width / 2 + tablica.anchor[0],
+    kosz = Klasy_poprawki.Obrecz(anchor=[tablica.width / 2 - kosz.width / 2 + tablica.anchor[0],
                                 screen_height * 1 // 5 + tablica_wysokość // 2 - kosz_wysokość],
                         color=ORANGE, width=kosz.width,
                         height=kosz.height, ile_zmniejszeń=kosz.ile_zmniejszeń)
